@@ -1,0 +1,8 @@
+figure {
+    margin: 5em auto;
+    width: 350px;
+    height: 150px;
+}
+.weather_icon {
+    border: darkgray dotted thin;
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>Weather App</title>
+
+        <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+    </head>
+    <body>
+
+        <div class="container">
+            <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+            //INDEX
+
+
+            <figure class="icons">
+                <canvas id="d" width="64" height="64" class="weather_icon"></canvas>
+                <canvas id="d_plus_1" width="64" height="64" class="weather_icon"></canvas>
+                <canvas id="d_plus_2" width="64" height="64" class="weather_icon"></canvas>
+            </figure>
+
+            <script type="text/javascript">
+                var icons = new Skycons({"color": "pink"});
+
+                icons.set("d", Skycons.CLEAR_DAY)
+                icons.set("d_plus_1", Skycons.PARTLY_CLOUDY_DAY)
+                icons.set("d_plus_2", Skycons.WIND)
+
+                icons.play();
+            </script>
+
+        </div>
+    </body>
+</html>
