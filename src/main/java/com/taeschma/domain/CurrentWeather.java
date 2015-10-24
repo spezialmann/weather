@@ -27,6 +27,8 @@ public class CurrentWeather {
     private Float precipMM;
     private Integer humidity;
     
+    private String locationId;
+    
     
 	public ObjectId getId() {
 		return id;
@@ -88,6 +90,11 @@ public class CurrentWeather {
 	public void setHumidity(Integer humidity) {
 		this.humidity = humidity;
 	}
-    
-    	
+	public String getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
+	}
+	
 }

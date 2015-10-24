@@ -1,5 +1,9 @@
 package com.taeschma.controller;
 
+import com.taeschma.domain.CurrentWeather;
+import com.taeschma.domain.Location;
+import com.taeschma.service.LocationService;
+import com.taeschma.service.WeatherService;
 import com.taeschma.wwo.ApiService;
 import com.taeschma.wwo.response.Weather;
 import org.slf4j.Logger;
@@ -7,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -19,6 +24,12 @@ public class IndexController {
     
     @Autowired
     private ApiService apiService;
+    
+    @Autowired
+    private LocationService locationService;
+    
+    @Autowired
+    private WeatherService weatherService;
     
     @RequestMapping("/")
     String index(){
@@ -43,5 +54,13 @@ public class IndexController {
         
         
         return "index";
+    }
+    
+    @RequestMapping("showcurrent")
+    public @ResponseBody CurrentWeather showCurrentWeather() {
+    	Location loc = locationService.findAll().get(0);
+    	log.info("Show weather for: " + loc.getLocationName());
+    	return weatherService.getCurrentWeatherForLocation(loc);
+    	
     }
 }

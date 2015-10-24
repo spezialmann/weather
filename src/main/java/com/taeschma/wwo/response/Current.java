@@ -9,10 +9,15 @@ import java.util.List;
 public class Current {
     
     private Integer temp_C;
+    private Integer FeelsLikeC;
+    
     private Integer weatherCode;
     private List<Value> weatherDesc;
     private List<Value> weatherIconUrl;
+    
     private Integer humidity;
+    private Float precipMM;
+    
     private Integer windspeedKmph;
     private String winddir16Point;
 
@@ -28,7 +33,15 @@ public class Current {
         return weatherCode;
     }
 
-    public void setWeatherCode(Integer weatherCode) {
+    public Integer getFeelsLikeC() {
+		return FeelsLikeC;
+	}
+
+	public void setFeelsLikeC(Integer feelsLikeC) {
+		FeelsLikeC = feelsLikeC;
+	}
+
+	public void setWeatherCode(Integer weatherCode) {
         this.weatherCode = weatherCode;
     }
 
@@ -56,7 +69,15 @@ public class Current {
         this.humidity = humidity;
     }
 
-    public Integer getWindspeedKmph() {
+    public Float getPrecipMM() {
+		return precipMM;
+	}
+
+	public void setPrecipMM(Float precipMM) {
+		this.precipMM = precipMM;
+	}
+
+	public Integer getWindspeedKmph() {
         return windspeedKmph;
     }
 
