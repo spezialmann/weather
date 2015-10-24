@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -57,8 +58,13 @@ public class IndexController {
     }
     
     @RequestMapping("showcurrent")
-    public @ResponseBody CurrentWeather showCurrentWeather() {
-    	Location loc = locationService.findAll().get(0);
+    public @ResponseBody CurrentWeather showCurrentWeather(@RequestParam(value = "location", defaultValue="", required = false) String location) {
+    	if(location==null || location.isEmpty()) {
+    		Location loc = locationService.findAll().get(0);
+    		location = loc.getLocationId();
+    	}
+    	log.info("Location: " + location);
+    	Location loc = locationService.find(location);
     	log.info("Show weather for: " + loc.getLocationName());
     	return weatherService.getCurrentWeatherForLocation(loc);
     	

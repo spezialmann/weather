@@ -6,6 +6,15 @@ import com.taeschma.domain.CurrentWeather;
 import com.taeschma.wwo.response.Current;
 
 public class ApiMapper {
+	
+	/**
+	 * Map api response to CurrentWeather entity
+	 * 
+	 * @param current
+	 * @param date
+	 * @param locationId
+	 * @return
+	 */
 	public static CurrentWeather getCurrentWeather(Current current, Date date, String locationId) {
 		CurrentWeather currentWeather = new CurrentWeather();
 		
