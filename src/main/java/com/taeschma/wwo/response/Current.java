@@ -2,6 +2,8 @@ package com.taeschma.wwo.response;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author marco
@@ -9,7 +11,8 @@ import java.util.List;
 public class Current {
     
     private Integer temp_C;
-    private Integer FeelsLikeC;
+    @JsonProperty("FeelsLikeC")
+    private Integer feelsLikeC;
     
     private Integer weatherCode;
     private List<Value> weatherDesc;
@@ -33,12 +36,12 @@ public class Current {
         return weatherCode;
     }
 
-    public Integer getFeelsLikeC() {
-		return FeelsLikeC;
+	public Integer getFeelsLikeC() {
+		return feelsLikeC;
 	}
 
 	public void setFeelsLikeC(Integer feelsLikeC) {
-		FeelsLikeC = feelsLikeC;
+		this.feelsLikeC = feelsLikeC;
 	}
 
 	public void setWeatherCode(Integer weatherCode) {

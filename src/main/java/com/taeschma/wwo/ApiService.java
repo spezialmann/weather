@@ -41,10 +41,10 @@ public class ApiService {
         params.put("location", location);
         params.put("key", weatherApiKey);
 
+        log.debug(uri);
+        
         RestTemplate restTemplate = getRestTemplate();
         Weather response = restTemplate.getForObject(uri, Weather.class, params);
-        
-        log.info(response.toString());
         
         return response;
     }
