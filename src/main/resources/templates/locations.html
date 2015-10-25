@@ -12,8 +12,7 @@
 		<div th:if="${not #lists.isEmpty(locations)}">
 			<h2>Location List</h2>
 			<table class="table table-striped">
-				<tr>
-					<th>Location Id</th>
+				<tr>					
 					<th>Location Name</th>
 					<th>Latitude</th>
 					<th>Longitude</th>
@@ -22,8 +21,6 @@
 					<th>Delete</th>
 				</tr>
 				<tr th:each="location : ${locations}">
-					<td th:text="${location.locationId}"><a
-						href="/location/${locationId}">Id</a></td>
 					<td th:text="${location.locationName}">Location Name</td>
 					<td th:text="${location.latitude}">LATIDUE</td>
 					<td th:text="${location.longitude}">LONGITUDE</td>
@@ -60,7 +57,7 @@
 				},
 				dataType : 'json',
 				success : function(data) {
-					var $title = $('<span />').text(data.tempC);
+					var $title = $('<span />').text(data.tempC + ' - ' + data.weatherCode);
 					$title.append(' °C');
 					$('#tempC_' + v).html($title);
 

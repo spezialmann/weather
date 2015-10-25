@@ -4,6 +4,6 @@ figure {
     height: 150px;
 }
 .weather_icon {
-    border: darkgray dotted thin;
+    /** border: darkgray dotted thin; **/
     vertical-align: middle;
 }
