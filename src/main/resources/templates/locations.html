@@ -57,12 +57,10 @@
 				},
 				dataType : 'json',
 				success : function(data) {
-					var $title = $('<span />').text(data.tempC + ' - ' + data.weatherCode);
-					$title.append(' °C');
+					var $title = $('<span />').text(data.tempC);
+					$title.append(' °C ' );
 					$('#tempC_' + v).html($title);
-
-					icons.set("icon_" + v, Skycons.CLEAR_DAY);
-
+					icons.set("icon_" + v, weatherCodes[data.weatherCode]);
 				},
 				type : 'GET'
 			});
