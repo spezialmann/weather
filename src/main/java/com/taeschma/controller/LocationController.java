@@ -28,9 +28,7 @@ public class LocationController {
 
     @RequestMapping(value = "/locations", method = RequestMethod.GET)
     public String list(Model model) {
-        
-        log.info("list action");
-
+        log.debug("list action");
         model.addAttribute("locations", locationService.findAll());
         return "locations";
     }

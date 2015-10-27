@@ -40,18 +40,15 @@ public class IndexController {
     
     @RequestMapping("/weathercheck")
     String weathercheck(){
-        log.info("weathercheck Action");
+        log.debug("weathercheck Action");
         
         Weather weatherResponse = apiService.doWeatherRequest("London");
-        log.error("Min Temp morgen: " + weatherResponse.getData().getWeather().get(1).getMintempC() + " MIN Grad ");
-        
-        log.warn("" + weatherResponse.getData().toString());
-        
-        log.warn("Current Temp: : " + weatherResponse.getData().getCurrent_condition().get(0).getWinddir16Point()); 
-        log.warn("Current Weather ID: : " + weatherResponse.getData().getCurrent_condition().get(0).getWeatherCode()); 
-        log.warn("Current Icon: : " + weatherResponse.getData().getCurrent_condition().get(0).getWeatherIconUrl().get(0).getValue());
-        
-        log.error("AreaName: " + weatherResponse.getData().getNearest_area().get(0).getAreaName().get(0).getValue());
+        log.debug("Min Temp morgen: " + weatherResponse.getData().getWeather().get(1).getMintempC() + " MIN Grad ");
+        log.debug("" + weatherResponse.getData().toString());
+        log.debug("Current Temp: : " + weatherResponse.getData().getCurrent_condition().get(0).getWinddir16Point()); 
+        log.debug("Current Weather ID: : " + weatherResponse.getData().getCurrent_condition().get(0).getWeatherCode()); 
+        log.debug("Current Icon: : " + weatherResponse.getData().getCurrent_condition().get(0).getWeatherIconUrl().get(0).getValue());
+        log.debug("AreaName: " + weatherResponse.getData().getNearest_area().get(0).getAreaName().get(0).getValue());
         
         
         return "index";
@@ -63,9 +60,9 @@ public class IndexController {
     		Location loc = locationService.findAll().get(0);
     		location = loc.getLocationId();
     	}
-    	log.info("Location: " + location);
+    	log.debug("Location: " + location);
     	Location loc = locationService.find(location);
-    	log.info("Show weather for: " + loc.getLocationName());
+    	log.debug("Show weather for: " + loc.getLocationName());
     	return weatherService.getCurrentWeatherForLocation(loc);
     	
     }
