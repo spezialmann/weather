@@ -55,8 +55,9 @@ public class LocationController {
 
     @RequestMapping(value = "/location", method = RequestMethod.POST)
     public String saveLocation(Location location) {
+    	log.debug("Location-Name-vor: " + location.getLocationName());
         locationService.saveOrUpdate(location);
-        log.info("ls: " + location.toString());
+        log.debug("Location-Name-nach: " + location.getLocationName());
         return "redirect:/location/" + location.getLocationId();
     }
 

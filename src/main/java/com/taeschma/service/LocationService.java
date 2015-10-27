@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import static org.springframework.data.domain.Sort.Direction.ASC;
@@ -24,6 +25,13 @@ public class LocationService {
     @Autowired
     private LocationRepository locationRepository;
 
+    
+    /**
+     * findAll Locations 
+     * default sort: locationName ASC
+     * 
+     * @return
+     */
     public List<Location> findAll() {
         return locationRepository.findAll(
                 new Sort(
@@ -36,6 +44,12 @@ public class LocationService {
         return locationRepository.findByLocationId(locationId);
     }
 
+    /**
+     * delete Location
+     * 
+     * @param locationId
+     * @return
+     */
     public boolean deleteLocation(String locationId) {
         Location findByLocationId = locationRepository.findByLocationId(locationId);
         if ( findByLocationId == null ) {
@@ -45,13 +59,22 @@ public class LocationService {
         return true;
     }
 
+    /**
+     * save or update Location
+     * 
+     * @param location
+     * @return
+     */
     public Location saveOrUpdate(Location location) {
         if (location.getLocationId() == null || location.getLocationId().equals("")) {
             log.info("Location neu Anlegen" + location.toString());
             location.setLocationId(UUID.randomUUID().toString());
             location = locationRepository.insert(location);
         } else {
-            location = locationRepository.save(location);
+        	log.info("Update Location " + location.getLocationId());
+        	Location locationFromDb = locationRepository.findByLocationId(location.getLocationId());
+        	BeanUtils.copyProperties(location, locationFromDb, "locationId", "id", "version");
+            location = locationRepository.save(locationFromDb);
         }
         return location;
     }

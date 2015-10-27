@@ -14,19 +14,15 @@
 			<table class="table table-striped">
 				<tr>					
 					<th>Location Name</th>
-					<th>Latitude</th>
-					<th>Longitude</th>
 					<th>Current weather</th>
 					<th>Edit</th>
 					<th>Delete</th>
 				</tr>
 				<tr th:each="location : ${locations}">
 					<td th:text="${location.locationName}">Location Name</td>
-					<td th:text="${location.latitude}">LATIDUE</td>
-					<td th:text="${location.longitude}">LONGITUDE</td>
 					<td >
-						<canvas th:id="${'icon_' + location.locationId}" width="16"
-							height="16" class="weather_icon"></canvas>
+						<canvas th:id="${'icon_' + location.locationId}" width="24"
+							height="24" class="weather_icon"></canvas>
 						<span th:id="${'tempC_' + location.locationId}">Current weather</span>
 					</td>
 					<td><a th:href="${'/location/edit/' + location.locationId}">Edit</a></td>
@@ -41,42 +37,28 @@
 		// <![CDATA[ 
 		            
 		//init icons
-		var icons = new Skycons({
-			"color" : "pink"
-		});
+		var icons = new Skycons( {"color":"blue"} );
 
 		//callback weather data
 		function weather(v, i, ar) {
 			$.ajax({
-				url : "/showcurrent",
-				data : {
-					location : '' + v
-				},
-				error : function() {
-					$('#tempC_' + v).html('<p>n. a.</p>');
-				},
-				dataType : 'json',
-				success : function(data) {
-					var $title = $('<span />').text(data.tempC);
-					$title.append(' °C ' );
-					$('#tempC_' + v).html($title);
-					icons.set("icon_" + v, weatherCodes[data.weatherCode]);
-				},
-				type : 'GET'
+				url : 		"/showcurrent",
+				data : 		{ location : '' + v },
+				error : 	function() { $('#tempC_' + v).html('n. a.');	},
+				dataType : 	'json',
+				type : 		'GET',
+				success : 	function(data) {
+								$('#tempC_' + v).html(data.tempC + ' °C ');
+								icons.set("icon_" + v, weatherCodes[data.weatherCode]);
+							}
 			});
-
 		}
 
 		//for all locations load weather data
 		var myLocations = /*[[${locations.![locationId]}]]*/[];
 		for (var i = 0; i < myLocations.length; i++) {
-			// do whatever 
 			weather(myLocations[i]);
 		}
-
-		//icons.set("d_plus_1", Skycons.PARTLY_CLOUDY_DAY)
-		//icons.set("d_plus_2", Skycons.WIND)
-
 		//start icon animation
 		icons.play();
 
