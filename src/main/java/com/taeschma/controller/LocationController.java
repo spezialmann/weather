@@ -2,6 +2,8 @@ package com.taeschma.controller;
 
 import com.taeschma.domain.Location;
 import com.taeschma.service.LocationService;
+import com.taeschma.service.WeatherService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LocationController {
 
     private final Logger log = LoggerFactory.getLogger(LocationController.class);
+    
     private LocationService locationService;
+    private WeatherService weatherService;
 
     @Autowired
     public void setLocationService(LocationService locationService) {
         this.locationService = locationService;
+    }
+    @Autowired
+    public void setweatherService(WeatherService weatherService) {
+        this.weatherService = weatherService;
     }
 
     @RequestMapping(value = "/locations", method = RequestMethod.GET)
@@ -56,6 +64,7 @@ public class LocationController {
     	log.debug("Location-Name-vor: " + location.getLocationName());
         locationService.saveOrUpdate(location);
         log.debug("Location-Name-nach: " + location.getLocationName());
+        weatherService.updateWeatherForLocation(location);
         return "redirect:/location/" + location.getLocationId();
     }
 

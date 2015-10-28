@@ -1,17 +1,45 @@
 package com.taeschma.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class ForecastDay
-{
+@Document(collection = "ForecastDayCollection")
+public class ForecastDay {	
+	
+	@Id
+    private ObjectId id;
+	
+	@Indexed(unique = true)
+	private String dateLocationIndex;
+	
     private Date date;
     private Integer   weatherCode;
     private Integer   maxTempC;
     private Integer   minTempC;
     
+    private BigDecimal precipMM;
+    private Integer windspeedKmh;
+    
     private String locationId;
     
+	public ObjectId getId() {
+		return id;
+	}
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
+	
+	public String getDateLocationIndex() {
+		return dateLocationIndex;
+	}
+	public void setDateLocationIndex(String dateLocationIndex) {
+		this.dateLocationIndex = dateLocationIndex;
+	}
 	public Date getDate() {
 		return date;
 	}
@@ -42,6 +70,18 @@ public class ForecastDay
 	public void setLocationId(String locationId) {
 		this.locationId = locationId;
 	}
-
+	public BigDecimal getPrecipMM() {
+		return precipMM;
+	}
+	public void setPrecipMM(BigDecimal precipMM) {
+		this.precipMM = precipMM;
+	}
+	public Integer getWindspeedKmh() {
+		return windspeedKmh;
+	}
+	public void setWindspeedKmh(Integer windspeedKmh) {
+		this.windspeedKmh = windspeedKmh;
+	}
+	
 }
 

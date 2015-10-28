@@ -3,6 +3,8 @@ package com.taeschma.wwo.response;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author marco
@@ -13,10 +15,10 @@ public class Day {
 
     private List<Map<String, Object>> hourly;
 
-    private Integer maxtempC;
-    private Integer maxtempF;
-    private Integer mintempC;
-    private Integer mintempF;
+    @JsonProperty("maxtempC")
+    private Integer maxTempC;
+    @JsonProperty("mintempC")
+    private Integer minTempC;
 
     public String getDate() {
         return date;
@@ -24,22 +26,6 @@ public class Day {
 
     public List<Map<String, Object>> getHourly() {
         return hourly;
-    }
-
-    public Integer getMaxtempC() {
-        return maxtempC;
-    }
-
-    public Integer getMaxtempF() {
-        return maxtempF;
-    }
-
-    public Integer getMintempC() {
-        return mintempC;
-    }
-
-    public Integer getMintempF() {
-        return mintempF;
     }
 
     public void setDate(String date) {
@@ -50,20 +36,22 @@ public class Day {
         this.hourly = hourly;
     }
 
-    public void setMaxtempC(Integer maxtempC) {
-        this.maxtempC = maxtempC;
-    }
+	public Integer getMaxTempC() {
+		return maxTempC;
+	}
 
-    public void setMaxtempF(Integer maxtempF) {
-        this.maxtempF = maxtempF;
-    }
+	public void setMaxTempC(Integer maxTempC) {
+		this.maxTempC = maxTempC;
+	}
 
-    public void setMintempC(Integer mintempC) {
-        this.mintempC = mintempC;
-    }
+	public Integer getMinTempC() {
+		return minTempC;
+	}
 
-    public void setMintempF(Integer mintempF) {
-        this.mintempF = mintempF;
-    }
+	public void setMinTempC(Integer minTempC) {
+		this.minTempC = minTempC;
+	}
+
+
 
 }

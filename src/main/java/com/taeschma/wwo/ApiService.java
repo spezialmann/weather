@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * communication with wwo
  *
  * @author marco
  */
@@ -33,15 +34,22 @@ public class ApiService {
     
     private final Logger log = LoggerFactory.getLogger(ApiService.class);
 
+    /**
+     * weather request with location name or
+     * latidude,longitude as String
+     * 
+     * @param location
+     * @return
+     */
     public Weather doWeatherRequest(String location) {
         final String uri = scheme
-                + "://api.worldweatheronline.com/free/v2/weather.ashx?q={location}&format=json&num_of_days=4&includelocation=yes&show_comments=no&tp=24&key={key}";
+                + "://api.worldweatheronline.com/free/v2/weather.ashx?q={location}&format=json&num_of_days=5&includelocation=yes&show_comments=no&tp=24&key={key}";
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("location", location);
         params.put("key", weatherApiKey);
 
-        log.debug(uri);
+        log.warn(uri);
         
         RestTemplate restTemplate = getRestTemplate();
         Weather response = restTemplate.getForObject(uri, Weather.class, params);
@@ -49,6 +57,11 @@ public class ApiService {
         return response;
     }
 
+    /**
+     * get the RestTemplate 
+     * optional with Proxy
+     * @return
+     */
     private RestTemplate getRestTemplate() {
         if (restWithProxy) {
             SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
