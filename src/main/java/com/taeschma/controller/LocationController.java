@@ -4,9 +4,12 @@ import com.taeschma.domain.Location;
 import com.taeschma.service.LocationService;
 import com.taeschma.service.WeatherService;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,9 @@ public class LocationController {
     
     private LocationService locationService;
     private WeatherService weatherService;
+    
+    @Value("#{'${weather.station}'.split(',')}")
+    private List<String> myStations;
 
     @Autowired
     public void setLocationService(LocationService locationService) {
@@ -38,6 +44,13 @@ public class LocationController {
     public String list(Model model) {
         log.debug("list action");
         model.addAttribute("locations", locationService.findAll());
+        
+        for (int i = 0; i < myStations.size(); i++) {
+        	if(myStations.get(i)!=null && !myStations.get(i).equals("")) {
+        		log.error("Station " + i + ": " + myStations.get(i));
+        	}
+		}
+        
         return "locations";
     }
 
