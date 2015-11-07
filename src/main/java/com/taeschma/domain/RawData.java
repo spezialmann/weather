@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.taeschma.util.ObjectID_Serializer;
 
-@Document(collection = "StationRawDataCollection")
+@Document(collection = "RawDataCollection")
 public class RawData {
 	@Id
     private ObjectId id;
@@ -36,6 +36,10 @@ public class RawData {
 	}
 	public void setRawData(String rawData) {
 		this.rawData = rawData;
+	}
+	@Override
+	public String toString() {
+		return "RawData [id=" + id + ", timeOfRecording=" + timeOfRecording + ", rawData=" + rawData + "]";
 	}
     
     
