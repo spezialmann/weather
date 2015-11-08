@@ -28,7 +28,7 @@ public class LocationController {
     private LocationService locationService;
     private WeatherService weatherService;
     
-    @Value("#{'${weather.station}'.split(',')}")
+    @Value("#{'${weather.station.positions}'.split(',')}")
     private List<String> myStations;
 
     @Autowired

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.taeschma.domain.RawData;
+import com.taeschma.domain.StationRawData;
 import com.taeschma.service.RawDataService;
 
 @Controller
@@ -21,7 +21,7 @@ public class RawDataController {
 	private RawDataService rawDataService;
 	
 	@RequestMapping(value = "/rawdata", method = RequestMethod.POST)
-    public @ResponseBody RawData saveRawData(@RequestBody RawData rawData) {
+    public @ResponseBody StationRawData saveRawData(@RequestBody StationRawData rawData) {
 		
 		log.info("RawData " + rawData.toString());
 		
