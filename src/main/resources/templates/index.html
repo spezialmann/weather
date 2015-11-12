@@ -1,34 +1,60 @@
 <!DOCTYPE html>
 <html>
-    <head lang="en">
+<head lang="en">
 
-        <title>Weather App</title>
+<title>Weather App</title>
 
-        <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
-    </head>
-    <body>
+<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
 
-        <div class="container">
-            <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
-            //INDEX
+	<div class="container">
+		<!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+		//INDEX
+
+		<div th:if="${not #lists.isEmpty(currentStationWeatherList)}">
+			<h2>Current Weather Data</h2>
+			<table class="table table-striped">
+				<tr>
+					<th>temp</th>
+					<th>min</th>
+					<th>max</th>
+					<th>humidity</th>
+					<th>wind</th>
+					<th>precip</th>
+				</tr>
+				<tr th:each="current : ${currentStationWeatherList}">
+					<td th:text="${current.temperature}">0</td>
+					<td th:text="${current.minTemperature}">0</td>
+					<td th:text="${current.maxTemperature}">0</td>
+					<td th:text="${current.humidity}">0</td>
+					<td th:text="${current.windspeedKmph}">0</td>
+					<td th:text="${current.precipMM}">0</td>
+					
+				</tr>
+			</table>
+
+		</div>
 
 
-            <figure class="icons">
-                <canvas id="d" width="64" height="64" class="weather_icon"></canvas>
-                <canvas id="d_plus_1" width="64" height="64" class="weather_icon"></canvas>
-                <canvas id="d_plus_2" width="64" height="64" class="weather_icon"></canvas>
-            </figure>
+		<figure class="icons">
+			<canvas id="d" width="64" height="64" class="weather_icon"></canvas>
+			<canvas id="d_plus_1" width="64" height="64" class="weather_icon"></canvas>
+			<canvas id="d_plus_2" width="64" height="64" class="weather_icon"></canvas>
+		</figure>
 
-            <script type="text/javascript">
-                var icons = new Skycons({"color": "pink"});
+		<script type="text/javascript">
+			var icons = new Skycons({
+				"color" : "pink"
+			});
 
-                icons.set("d", Skycons.CLEAR_DAY)
-                icons.set("d_plus_1", Skycons.PARTLY_CLOUDY_DAY)
-                icons.set("d_plus_2", Skycons.WIND)
+			icons.set("d", Skycons.CLEAR_DAY)
+			icons.set("d_plus_1", Skycons.PARTLY_CLOUDY_DAY)
+			icons.set("d_plus_2", Skycons.WIND)
 
-                icons.play();
-            </script>
+			icons.play();
+		</script>
 
-        </div>
-    </body>
+	</div>
+</body>
 </html>
