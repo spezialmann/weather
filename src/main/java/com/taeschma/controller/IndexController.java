@@ -39,7 +39,7 @@ public class IndexController {
     		@RequestParam(value = "station", defaultValue="", required = false) String station,
     		@RequestParam(value = "spot", defaultValue="", required = false) Integer spot,
     		Model model) {
-        log.debug("index Action");
+        log.error("index Action");
         
         List<StationRawData> findAllForToday = rawDataService.findAllForToday(station);
         
