@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import com.taeschma.domain.CurrentStationWeather;
 import com.taeschma.domain.StationRawData;
@@ -14,8 +13,7 @@ public class WeatherMapper {
 
 	private final static Logger log = LoggerFactory.getLogger(WeatherMapper.class);
 	
-	@Value("${weather.station.ml.per.tic}")
-	private static Integer mlPerTic;
+	
 
 	public static List<CurrentStationWeather> getCurrentStationWeather(List<StationRawData> dataRows) {
 		List<CurrentStationWeather> ret = new ArrayList<>();
@@ -44,7 +42,7 @@ public class WeatherMapper {
 				String[] dataValues = dataString.split(";");
 
 				currentWeather.setStationId("todo");
-				try {
+				//try {
 					currentWeather.setTimestamp(dataRow.getTimeOfRecording());
 					currentWeather.setTemperature(Float.parseFloat(dataValues[19].replace(",", ".")));
 					currentWeather.setHumidity(Integer.parseInt(dataValues[20]));
@@ -63,23 +61,28 @@ public class WeatherMapper {
 					
 					//RAIN
 					Integer currentTics = Integer.parseInt(dataValues[22]);
+					Integer ticsSinceLast = 0;
+					//first entry of the day or no rain since last entry
+					/**
+					 * TODO Calculation of the first value of the day need the last value from day before...
+					 */
 					if (currentWeather.getPrecipCount() == null || currentWeather.getPrecipCount().equals(currentTics)) {
-						currentWeather.setPrecipCount(currentTics);
 						currentWeather.setPrecipMM(new Float("0.0"));
 					}
-					else if(currentWeather.getPrecipCount().compareTo(currentTics)<0) {
-						currentWeather.setPrecipMM(getCurrentPrecip(currentTics - currentWeather.getPrecipCount(), currentTics));
-						currentWeather.setPrecipCount(currentTics);
-						
+					//rain
+					else {
+						ticsSinceLast = getCurrentPrecipCount(currentWeather.getPrecipCount(), currentTics);
+						currentWeather.setPrecipMM(ticsSinceLast * 295 / new Float("1000.0"));						
 					}
 					currentWeather.setPrecipMMSum(currentWeather.getPrecipMMSum()+currentWeather.getPrecipMM());
-
+					
+					currentWeather.setPrecipCount(currentTics);
 					currentWeather.setWindspeedKmph(Float.parseFloat(dataValues[21].replace(",", ".")));
-					currentWeather.setPrecipMM(Float.parseFloat(dataValues[22].replace(",", ".")));
-
+				/**
 				} catch (Exception e) {
 					log.error("Error parsing temperature: " + e.getMessage());
 				}
+				**/
 
 			}
 		}
@@ -87,11 +90,21 @@ public class WeatherMapper {
 		return ret;
 	}
 	
-	private static Float getCurrentPrecip(Integer oldValue, Integer newValue) {
-		Float ret = new Float("0.0");
-		
-		return ret;
+	/**
+	 * calculate the number of tics
+	 *  
+	 * @param oldValue
+	 * @param newValue
+	 * @return
+	 */
+	private static Integer getCurrentPrecipCount(Integer oldValue, Integer newValue) {
+		Integer tempTics = newValue-oldValue;
+		if (oldValue.compareTo(newValue)>0) {
+			tempTics = (4096 - oldValue) + newValue;
+		}
+		return tempTics;
 	}
+	
 
 	/**
 	 * Liefert key-value Paare für eine stationId key=Zeitstempel

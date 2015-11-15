@@ -16,6 +16,11 @@ public class CurrentStationWeather {
     
     
     
+	public CurrentStationWeather() {
+		super();
+		this.precipMMSum = new Float("0.0");
+		
+	}
 	public String getStationId() {
 		return stationId;
 	}
