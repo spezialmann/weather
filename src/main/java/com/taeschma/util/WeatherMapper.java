@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.taeschma.domain.CurrentStationWeather;
 import com.taeschma.domain.StationRawData;
@@ -12,6 +13,9 @@ import com.taeschma.domain.StationRawData;
 public class WeatherMapper {
 
 	private final static Logger log = LoggerFactory.getLogger(WeatherMapper.class);
+	
+	@Value("${weather.station.ml.per.tic}")
+	private static Integer mlPerTic;
 
 	public static List<CurrentStationWeather> getCurrentStationWeather(List<StationRawData> dataRows) {
 		List<CurrentStationWeather> ret = new ArrayList<>();
@@ -27,9 +31,11 @@ public class WeatherMapper {
 			/**
 			 * 3..10 = temperature 11..18 = humidity
 			 * 
-			 * combi station 19 = temperature 20 = humidity 21 = wind speed 22 =
-			 * number of tics (1 tic = 295ml/m² ; 0..4096 tics)
-			 * 
+			 * combi station 
+			 * 19 = temperature 
+			 * 20 = humidity 
+			 * 21 = wind speed 
+			 * 22 = number of tics (1 tic = 295ml/m² ; 0..4096 tics)
 			 * 
 			 */
 			dataString = (String) dataRow.getRawData();
@@ -43,15 +49,30 @@ public class WeatherMapper {
 					currentWeather.setTemperature(Float.parseFloat(dataValues[19].replace(",", ".")));
 					currentWeather.setHumidity(Integer.parseInt(dataValues[20]));
 
+					//MIN TEMP
 					if (currentWeather.getMinTemperature() == null
 							|| (currentWeather.getTemperature().compareTo(currentWeather.getMinTemperature()) < 0)) {
 						currentWeather.setMinTemperature(currentWeather.getTemperature());
 					}
 
+					//MAX TEMP
 					if (currentWeather.getMaxTemperature() == null
 							|| (currentWeather.getTemperature().compareTo(currentWeather.getMaxTemperature()) > 0)) {
 						currentWeather.setMaxTemperature(currentWeather.getTemperature());
 					}
+					
+					//RAIN
+					Integer currentTics = Integer.parseInt(dataValues[22]);
+					if (currentWeather.getPrecipCount() == null || currentWeather.getPrecipCount().equals(currentTics)) {
+						currentWeather.setPrecipCount(currentTics);
+						currentWeather.setPrecipMM(new Float("0.0"));
+					}
+					else if(currentWeather.getPrecipCount().compareTo(currentTics)<0) {
+						currentWeather.setPrecipMM(getCurrentPrecip(currentTics - currentWeather.getPrecipCount(), currentTics));
+						currentWeather.setPrecipCount(currentTics);
+						
+					}
+					currentWeather.setPrecipMMSum(currentWeather.getPrecipMMSum()+currentWeather.getPrecipMM());
 
 					currentWeather.setWindspeedKmph(Float.parseFloat(dataValues[21].replace(",", ".")));
 					currentWeather.setPrecipMM(Float.parseFloat(dataValues[22].replace(",", ".")));
@@ -63,6 +84,12 @@ public class WeatherMapper {
 			}
 		}
 		ret.add(currentWeather);
+		return ret;
+	}
+	
+	private static Float getCurrentPrecip(Integer oldValue, Integer newValue) {
+		Float ret = new Float("0.0");
+		
 		return ret;
 	}
 

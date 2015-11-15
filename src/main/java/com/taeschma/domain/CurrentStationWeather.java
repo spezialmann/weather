@@ -9,7 +9,9 @@ public class CurrentStationWeather {
     private Float maxTemperature;
     private Integer humidity;
     private Float windspeedKmph;
+    private Integer precipCount;
     private Float precipMM;
+    private Float precipMMSum;
     private Date timestamp;
     
     
@@ -51,11 +53,25 @@ public class CurrentStationWeather {
 	public void setWindspeedKmph(Float windspeedKmph) {
 		this.windspeedKmph = windspeedKmph;
 	}
+	
+	public Integer getPrecipCount() {
+		return precipCount;
+	}
+	public void setPrecipCount(Integer precipCount) {
+		this.precipCount = precipCount;
+	}
 	public Float getPrecipMM() {
 		return precipMM;
 	}
 	public void setPrecipMM(Float precipMM) {
 		this.precipMM = precipMM;
+	}
+	
+	public Float getPrecipMMSum() {
+		return precipMMSum;
+	}
+	public void setPrecipMMSum(Float precipMMSum) {
+		this.precipMMSum = precipMMSum;
 	}
 	public Date getTimestamp() {
 		return timestamp;

@@ -22,6 +22,7 @@
 					<th>humidity</th>
 					<th>wind</th>
 					<th>precip</th>
+					<th>last update</th>
 				</tr>
 				<tr th:each="current : ${currentStationWeatherList}">
 					<td th:text="${current.temperature}">0</td>
@@ -30,7 +31,7 @@
 					<td th:text="${current.humidity}">0</td>
 					<td th:text="${current.windspeedKmph}">0</td>
 					<td th:text="${current.precipMM}">0</td>
-					
+					<td th:text="${current.timestamp}">0</td>
 				</tr>
 			</table>
 
