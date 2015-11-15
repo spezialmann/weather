@@ -45,14 +45,14 @@ public class WeatherService {
 	/**
 	 * Fetching weather data Every xxx minutes
 	 */
-	@Scheduled(initialDelay = 5000000, fixedDelay = 600000)
+	@Scheduled(initialDelay = 15000, fixedDelay = 6000000)
 	public void updateAllWeatherData() {
-		log.debug("Start api requests");
+		log.info("Start api requests");
 		List<Location> locations = locationService.findAll();
 		for (Location location : locations) {
 			updateWeatherForLocation(location);
 		}
-		log.debug("End api requests");
+		log.info("End api requests");
 	}
 	
 	/**

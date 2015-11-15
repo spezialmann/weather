@@ -45,11 +45,6 @@ public class LocationController {
         log.debug("list action");
         model.addAttribute("locations", locationService.findAll());
         
-        for (int i = 0; i < myStations.size(); i++) {
-        	if(myStations.get(i)!=null && !myStations.get(i).equals("")) {
-        		log.error("Station " + i + ": " + myStations.get(i));
-        	}
-		}
         
         return "locations";
     }
