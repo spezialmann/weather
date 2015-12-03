@@ -1,5 +1,6 @@
 package com.taeschma.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -34,6 +35,8 @@ public class IndexController {
 	private String stationId;
     @Value("${weather.station.show.current.index}")
 	private Integer measuringSpot;
+	@Value("${weather.stations.forecast.location.location.id}")
+	private String locationId;
         
     @Autowired
     private RawDataService rawDataService;
@@ -58,7 +61,16 @@ public class IndexController {
         log.info("index Action");
         List<StationRawData> findAllForToday = rawDataService.findAllForToday(station);
         List<CurrentStationWeather> currentStationWeatherList = WeatherMapper.getCurrentStationWeather(findAllForToday);
+        log.debug("Anzahl: " + currentStationWeatherList.size());
+        
+        if(currentStationWeatherList!=null && currentStationWeatherList.size()>0) {
+        	model.addAttribute("lastUpdate", currentStationWeatherList.get(0).getTimestamp());
+        }
+        
+        
         model.addAttribute("currentStationWeatherList", currentStationWeatherList);
+        model.addAttribute("currentStationWeather", weatherService.getCurrentWeatherForStationId(locationId));
+        
         return "index";
     }
       

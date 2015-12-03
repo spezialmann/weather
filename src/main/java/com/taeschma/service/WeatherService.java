@@ -1,5 +1,6 @@
 package com.taeschma.service;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -30,6 +32,13 @@ public class WeatherService {
 
 	private final Logger log = LoggerFactory.getLogger(WeatherService.class);
 
+	@Value("${weather.stations.forecast.location.latitude}")
+	private BigDecimal latitude;
+	@Value("${weather.stations.forecast.location.longitude}")
+	private BigDecimal longitude;
+	@Value("${weather.stations.forecast.location.location.id}")
+	private String locationId;
+	
 	@Autowired
 	private ApiService apiService;
 
@@ -49,6 +58,16 @@ public class WeatherService {
 	public void updateAllWeatherData() {
 		log.info("Start api requests");
 		List<Location> locations = locationService.findAll();
+		
+		/* Weather forecast for the location of the weather station */
+		if(longitude!=null && latitude!=null && locationId!=null) {
+			Location staticLocation = new Location();
+			staticLocation.setLatitude(latitude);
+			staticLocation.setLongitude(longitude);
+			staticLocation.setLocationId(locationId);
+			locations.add(staticLocation);
+		}
+		
 		for (Location location : locations) {
 			updateWeatherForLocation(location);
 		}
@@ -90,10 +109,17 @@ public class WeatherService {
 	 * get latest CurrentWeather for location
 	 */
 	public CurrentWeather getCurrentWeatherForLocation(Location location) {
+		return getCurrentWeatherForStationId(location.getLocationId());
+	}
+	
+	/**
+	 * get latest CurrentWeather for stationId
+	 */
+	public CurrentWeather getCurrentWeatherForStationId(String stationId) {
 		CurrentWeather ret = null;
 
 		PageRequest pr = new PageRequest(0, 1, new Sort(new Order(Direction.DESC, "date")));
-		List<CurrentWeather> result = currentWeatherRepository.findByLocationId(location.getLocationId(), pr);
+		List<CurrentWeather> result = currentWeatherRepository.findByLocationId(stationId, pr);
 
 		if (result != null && !result.isEmpty()) {
 			ret = result.get(0);

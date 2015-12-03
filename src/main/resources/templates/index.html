@@ -10,50 +10,59 @@
 
 	<div class="container">
 		<!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
-		//INDEX
 
 		<div th:if="${not #lists.isEmpty(currentStationWeatherList)}">
-			<h2>Current Weather Data</h2>
 			<table class="table table-striped">
 				<tr>
+					<th>&nbsp;</th>
 					<th>temp</th>
 					<th>min</th>
 					<th>max</th>
 					<th>humidity</th>
 					<th>wind</th>
-					<th>precip (current / sum)</th>
-					<th>last update</th>
+					<th>precip</th>
 				</tr>
 				<tr th:each="current : ${currentStationWeatherList}">
+					<td><canvas id="d" width="32" height="32" class="weather_icon"></canvas></td>
 					<td th:text="${#numbers.formatDecimal(current.temperature,1,1)}">0</td>
 					<td th:text="${#numbers.formatDecimal(current.minTemperature,1,1)}">0</td>
 					<td th:text="${#numbers.formatDecimal(current.maxTemperature,1,1)}">0</td>
 					<td th:text="${current.humidity}">0</td>
-					<td th:text="${#numbers.formatDecimal(current.windspeedKmph,1,1)}">0</td>
-					<td><span th:text="${#numbers.formatDecimal(current.precipMM,1,1)}">0</span> / <span th:text="${#numbers.formatDecimal(current.precipMMSum, 1, 1)}">0</span></td>
-					<td th:text="${current.timestamp}">0</td>
+					<td>
+						<span th:if="${current.windspeedKmph != null}">
+							<span th:text="${#numbers.formatDecimal(current.windspeedKmph,1,1)}">0</span>
+						</span>
+						<span th:if="${current.windspeedKmph == null}">
+							-
+						</span>
+					</td>
+					<td>
+						<span th:if="${current.precipMM != null}">
+							<span th:text="${#numbers.formatDecimal(current.precipMM,1,1)}">0</span> / 
+							<span th:text="${#numbers.formatDecimal(current.precipMMSum, 1, 1)}">0</span>
+						</span>
+						<span th:if="${current.precipMM == null}">
+							-
+						</span>
+					</td>					
 				</tr>
 			</table>
-
+			Last update: <span th:text="${lastUpdate}">last update</span>
 		</div>
 
 
-		<figure class="icons">
-			<canvas id="d" width="64" height="64" class="weather_icon"></canvas>
-			<canvas id="d_plus_1" width="64" height="64" class="weather_icon"></canvas>
-			<canvas id="d_plus_2" width="64" height="64" class="weather_icon"></canvas>
-		</figure>
-
-		<script type="text/javascript">
+		<script type="text/javascript" th:inline="javascript">
+		// <![CDATA[
 			var icons = new Skycons({
 				"color" : "pink"
 			});
 
-			icons.set("d", Skycons.CLEAR_DAY)
-			icons.set("d_plus_1", Skycons.PARTLY_CLOUDY_DAY)
-			icons.set("d_plus_2", Skycons.WIND)
+			var stationCode = [[${currentStationWeather.weatherCode}]];
+			icons.set("d", weatherCodes[stationCode]);
 
 			icons.play();
+						
+			// ]]>
 		</script>
 
 	</div>
