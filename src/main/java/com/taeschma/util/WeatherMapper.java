@@ -35,65 +35,66 @@ public class WeatherMapper {
 			dataString = (String) dataRow.getRawData();
 
 			if (dataString != null && !dataString.equals("")) {
+
 				String[] dataValues = dataString.split(";");
 
 				currentWeatherCombi.setStationId("combi");
 				currentWeather1.setStationId("first");
-				// try {
-				currentWeatherCombi.setTimestamp(dataRow.getTimeOfRecording());
-				currentWeatherCombi.setTemperature(Float.parseFloat(dataValues[19].replace(",", ".")));
-				currentWeatherCombi.setHumidity(Integer.parseInt(dataValues[20]));
-				
-				currentWeather1.setTimestamp(dataRow.getTimeOfRecording());
-				currentWeather1.setTemperature(Float.parseFloat(dataValues[3].replace(",", ".")));
-				currentWeather1.setHumidity(Integer.parseInt(dataValues[11]));
+				try {
+					currentWeatherCombi.setTimestamp(dataRow.getTimeOfRecording());
+					currentWeatherCombi.setTemperature(Float.parseFloat(dataValues[19].replace(",", ".")));
+					currentWeatherCombi.setHumidity(Integer.parseInt(dataValues[20]));
 
-				// MIN TEMP
-				if (currentWeatherCombi.getMinTemperature() == null || (currentWeatherCombi.getTemperature()
-						.compareTo(currentWeatherCombi.getMinTemperature()) < 0)) {
-					currentWeatherCombi.setMinTemperature(currentWeatherCombi.getTemperature());
-				}
-				if (currentWeather1.getMinTemperature() == null || (currentWeather1.getTemperature()
-						.compareTo(currentWeather1.getMinTemperature()) < 0)) {
-					currentWeather1.setMinTemperature(currentWeather1.getTemperature());
-				}
+					currentWeather1.setTimestamp(dataRow.getTimeOfRecording());
+					currentWeather1.setTemperature(Float.parseFloat(dataValues[3].replace(",", ".")));
+					currentWeather1.setHumidity(Integer.parseInt(dataValues[11]));
 
-				// MAX TEMP
-				if (currentWeatherCombi.getMaxTemperature() == null || (currentWeatherCombi.getTemperature()
-						.compareTo(currentWeatherCombi.getMaxTemperature()) > 0)) {
-					currentWeatherCombi.setMaxTemperature(currentWeatherCombi.getTemperature());
-				}
-				if (currentWeather1.getMaxTemperature() == null || (currentWeather1.getTemperature()
-						.compareTo(currentWeather1.getMaxTemperature()) > 0)) {
-					currentWeather1.setMaxTemperature(currentWeather1.getTemperature());
-				}
+					// MIN TEMP
+					if (currentWeatherCombi.getMinTemperature() == null || (currentWeatherCombi.getTemperature()
+							.compareTo(currentWeatherCombi.getMinTemperature()) < 0)) {
+						currentWeatherCombi.setMinTemperature(currentWeatherCombi.getTemperature());
+					}
+					if (currentWeather1.getMinTemperature() == null
+							|| (currentWeather1.getTemperature().compareTo(currentWeather1.getMinTemperature()) < 0)) {
+						currentWeather1.setMinTemperature(currentWeather1.getTemperature());
+					}
 
-				// RAIN
-				Integer currentTics = Integer.parseInt(dataValues[22]);
-				Integer ticsSinceLast = 0;
-				// first entry of the day or no rain since last entry
-				/**
-				 * TODO Calculation of the first value of the day need the last
-				 * value from day before...
-				 */
-				if (currentWeatherCombi.getPrecipCount() == null
-						|| currentWeatherCombi.getPrecipCount().equals(currentTics)) {
-					currentWeatherCombi.setPrecipMM(new Float("0.0"));
-				}
-				// rain
-				else {
-					ticsSinceLast = getCurrentPrecipCount(currentWeatherCombi.getPrecipCount(), currentTics);
-					currentWeatherCombi.setPrecipMM(ticsSinceLast * 295 / new Float("1000.0"));
-				}
-				currentWeatherCombi
-						.setPrecipMMSum(currentWeatherCombi.getPrecipMMSum() + currentWeatherCombi.getPrecipMM());
+					// MAX TEMP
+					if (currentWeatherCombi.getMaxTemperature() == null || (currentWeatherCombi.getTemperature()
+							.compareTo(currentWeatherCombi.getMaxTemperature()) > 0)) {
+						currentWeatherCombi.setMaxTemperature(currentWeatherCombi.getTemperature());
+					}
+					if (currentWeather1.getMaxTemperature() == null
+							|| (currentWeather1.getTemperature().compareTo(currentWeather1.getMaxTemperature()) > 0)) {
+						currentWeather1.setMaxTemperature(currentWeather1.getTemperature());
+					}
 
-				currentWeatherCombi.setPrecipCount(currentTics);
-				currentWeatherCombi.setWindspeedKmph(Float.parseFloat(dataValues[21].replace(",", ".")));
-				/**
-				 * } catch (Exception e) { log.error(
-				 * "Error parsing temperature: " + e.getMessage()); }
-				 **/
+					// RAIN
+					Integer currentTics = Integer.parseInt(dataValues[22]);
+					Integer ticsSinceLast = 0;
+					// first entry of the day or no rain since last entry
+					/**
+					 * TODO Calculation of the first value of the day need the
+					 * last value from day before...
+					 */
+					if (currentWeatherCombi.getPrecipCount() == null
+							|| currentWeatherCombi.getPrecipCount().equals(currentTics)) {
+						currentWeatherCombi.setPrecipMM(new Float("0.0"));
+					}
+					// rain
+					else {
+						ticsSinceLast = getCurrentPrecipCount(currentWeatherCombi.getPrecipCount(), currentTics);
+						currentWeatherCombi.setPrecipMM(ticsSinceLast * 295 / new Float("1000.0"));
+					}
+					currentWeatherCombi
+							.setPrecipMMSum(currentWeatherCombi.getPrecipMMSum() + currentWeatherCombi.getPrecipMM());
+
+					currentWeatherCombi.setPrecipCount(currentTics);
+					currentWeatherCombi.setWindspeedKmph(Float.parseFloat(dataValues[21].replace(",", ".")));
+
+				} catch (Exception e) {
+					log.error("Error parsing temperature: " + e.getMessage());
+				}
 
 			}
 		}

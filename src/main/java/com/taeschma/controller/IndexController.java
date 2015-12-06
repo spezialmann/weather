@@ -58,7 +58,7 @@ public class IndexController {
     		@RequestParam(value = "station", defaultValue="", required = false) String station,
     		@RequestParam(value = "spot", defaultValue="", required = false) Integer spot,
     		Model model) {
-        log.info("index Action");
+        log.debug("index Action");
         List<StationRawData> findAllForToday = rawDataService.findAllForToday(station);
         List<CurrentStationWeather> currentStationWeatherList = WeatherMapper.getCurrentStationWeather(findAllForToday);
         log.debug("Anzahl: " + currentStationWeatherList.size());
