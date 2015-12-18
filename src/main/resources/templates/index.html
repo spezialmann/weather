@@ -12,49 +12,67 @@
 		<!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
 
 		<div th:if="${not #lists.isEmpty(currentStationWeatherList)}">
-			<table class="table table-striped">
-				<tr>
-					<th>&nbsp;</th>
-					<th>temp</th>
-					<th>min</th>
-					<th>max</th>
-					<th>humidity</th>
-					<th>wind</th>
-					<th>precip</th>
-				</tr>
-				<tr th:each="current : ${currentStationWeatherList}">
-					<td><canvas id="d" width="32" height="32" class="weather_icon"></canvas></td>
-					<td th:text="${#numbers.formatDecimal(current.temperature,1,1)}">0</td>
-					<td th:text="${#numbers.formatDecimal(current.minTemperature,1,1)}">0</td>
-					<td th:text="${#numbers.formatDecimal(current.maxTemperature,1,1)}">0</td>
-					<td th:text="${current.humidity}">0</td>
-					<td>
-						<span th:if="${current.windspeedKmph != null}">
-							<span th:text="${#numbers.formatDecimal(current.windspeedKmph,1,1)}">0</span>
-						</span>
-						<span th:if="${current.windspeedKmph == null}">
-							-
-						</span>
-					</td>
-					<td>
-						<span th:if="${current.precipMM != null}">
-							<span th:text="${#numbers.formatDecimal(current.precipMM,1,1)}">0</span> / 
-							<span th:text="${#numbers.formatDecimal(current.precipMMSum, 1, 1)}">0</span>
-						</span>
-						<span th:if="${current.precipMM == null}">
-							-
-						</span>
-					</td>					
-				</tr>
-			</table>
-			Last update: <span th:text="${lastUpdate}">last update</span>
-		</div>
+			<div class="container bootstrap snippet">
+				<div class="col-md-6"
+					th:each="current : ${currentStationWeatherList}">
+					<!-- START widget-->
+					<div class="panel widget">
+						<div
+							th:class="${current.temperature > 20} ? 'panel-body bg-danger text-center' : 'panel-body bg-primary text-center'">
+							<div class="clearfix">
+								<div class="pull-left">
+									<i class="fa fa-arrow-circle-down fa-lg"></i> 
+									<span th:text="${#numbers.formatDecimal(current.minTemperature,1,1)}" class="text-medium">-</span>
+									<span>&nbsp;</span>
+									<i class="fa fa-arrow-circle-up fa-lg"></i> 
+									<span th:text="${#numbers.formatDecimal(current.maxTemperature,1,1)}" class="text-medium">-</span>
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-percent"></i> 
+									<span th:text="${current.humidity}" class="text-medium">-</span>
+								</div>
+							</div>
+							<span th:if="${current.stationId != 'first'}">
+								<canvas id="d" width="96" height="96" class="weather_icon"></canvas>
+							</span> 
+							<span th:if="${current.stationId == 'first'}"> 
+								<img
+								th:src="@{/images/spezialmann-avatar.png}"
+								src="../images/spezialmann-avatar.png" alt="Image" width="96"
+								class="img-thumbnail img-circle thumb96 border-gray" />
+							</span>
 
+							<h2 class="mt0">
+								<span th:text="${#numbers.formatDecimal(current.temperature,1,1)}" class="text-medium">-</span>°
+							</h2>
+							<div class="clearfix">
+								<div class="pull-left"> 
+									<span th:if="${current.windspeedKmph != null}"> 
+										<i class="fa fa-paper-plane-o fa-lg"></i>
+										<span th:text="${#numbers.formatDecimal(current.windspeedKmph,1,1)}" class="text-medium">0</span>
+									</span> 
+									<span th:if="${current.windspeedKmph == null}"> - </span>
+								</div>
+								<div class="pull-right">
+									<span th:if="${current.precipMM != null}"> 
+										<i class="fa fa-umbrella fa-lg"></i>
+										<span th:text="${#numbers.formatDecimal(current.precipMMSum, 1, 1)}" class="text-medium">0</span>
+									</span> 
+									<span th:if="${current.precipMM == null}"> - </span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END widget-->
+				</div>
+			</div>
+			<span>Last update: <span th:text="${lastUpdate}">last update</span></span>
+		</div>
 
 		<script type="text/javascript" th:inline="javascript">
 		// <![CDATA[
 			var icons = new Skycons({
-				"color" : "pink"
+				"color" : "white"
 			});
 
 			var stationCode = [[${currentStationWeather.weatherCode}]];

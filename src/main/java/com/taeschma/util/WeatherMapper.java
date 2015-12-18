@@ -93,7 +93,7 @@ public class WeatherMapper {
 					currentWeatherCombi.setWindspeedKmph(Float.parseFloat(dataValues[21].replace(",", ".")));
 
 				} catch (Exception e) {
-					log.error("Error parsing temperature: " + e.getMessage());
+					log.debug("Error parsing temperature: " + e.getMessage());
 				}
 
 			}
