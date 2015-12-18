@@ -21,14 +21,14 @@
 							th:class="${current.temperature > 20} ? 'panel-body bg-danger text-center' : 'panel-body bg-primary text-center'">
 							<div class="clearfix">
 								<div class="pull-left">
-									<i class="fa fa-arrow-circle-down fa-lg"></i> 
+									<i class="fa fa-arrow-circle-down fa-2x"></i> 
 									<span th:text="${#numbers.formatDecimal(current.minTemperature,1,1)}" class="text-medium">-</span>
 									<span>&nbsp;</span>
-									<i class="fa fa-arrow-circle-up fa-lg"></i> 
+									<i class="fa fa-arrow-circle-up fa-2x"></i> 
 									<span th:text="${#numbers.formatDecimal(current.maxTemperature,1,1)}" class="text-medium">-</span>
 								</div>
 								<div class="pull-right">
-									<i class="fa fa-percent"></i> 
+									<i class="fa fa-percent fa-2x"></i> 
 									<span th:text="${current.humidity}" class="text-medium">-</span>
 								</div>
 							</div>
@@ -43,22 +43,22 @@
 							</span>
 
 							<h2 class="mt0">
-								<span th:text="${#numbers.formatDecimal(current.temperature,1,1)}" class="text-medium">-</span>°
+								<span th:text="${#numbers.formatDecimal(current.temperature,1,1)}" class="text-medium">-</span><span class="text-medium">°</span>
 							</h2>
 							<div class="clearfix">
 								<div class="pull-left"> 
+								<i class="fa fa-paper-plane-o fa-2x"></i>
 									<span th:if="${current.windspeedKmph != null}"> 
-										<i class="fa fa-paper-plane-o fa-lg"></i>
 										<span th:text="${#numbers.formatDecimal(current.windspeedKmph,1,1)}" class="text-medium">0</span>
 									</span> 
-									<span th:if="${current.windspeedKmph == null}"> - </span>
+									<span th:if="${current.windspeedKmph == null}" class="text-medium">0,0</span>
 								</div>
 								<div class="pull-right">
+										<i class="fa fa-umbrella fa-2x"></i>
 									<span th:if="${current.precipMM != null}"> 
-										<i class="fa fa-umbrella fa-lg"></i>
 										<span th:text="${#numbers.formatDecimal(current.precipMMSum, 1, 1)}" class="text-medium">0</span>
 									</span> 
-									<span th:if="${current.precipMM == null}"> - </span>
+									<span th:if="${current.precipMM == null}" class="text-medium">0,0</span>
 								</div>
 							</div>
 						</div>
