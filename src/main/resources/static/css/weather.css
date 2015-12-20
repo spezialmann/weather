@@ -10,7 +10,12 @@ figure {
 }
 
 body {
-	margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
 }
 
 .widget .panel, .widget.panel {
@@ -42,5 +47,26 @@ body {
 }
 
 .text-medium {
-	font-size: 2.25em;
+	font-size: 1.5em;
 }
+
+.last-update {
+	padding-left: 20px;
+}
+
+
+/*!
+ * IE10 viewport hack for Surface/desktop Windows 8 bug
+ * Copyright 2014-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+/*
+ * See the Getting Started docs for more information:
+ * http://getbootstrap.com/getting-started/#support-ie10-width
+ */
+@-webkit-viewport { width: device-width; }
+@-moz-viewport    { width: device-width; }
+@-ms-viewport     { width: device-width; }
+@-o-viewport      { width: device-width; }
+@viewport         { width: device-width; }
