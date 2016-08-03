@@ -2,6 +2,7 @@ package com.taeschma.controller;
 
 import java.util.List;
 
+import com.taeschma.service.AnalyticService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ public class IndexController {
     private WeatherService weatherService;
     @Autowired
     private LocationService locationService;
+    @Autowired
+    private AnalyticService analyticService;
     
     /**
      * Index page with weather station info
@@ -53,7 +56,7 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/")
-    String index(
+    public String index(
     		@RequestParam(value = "station", defaultValue="", required = false) String station,
     		@RequestParam(value = "spot", defaultValue="", required = false) Integer spot,
     		Model model) {
@@ -90,6 +93,13 @@ public class IndexController {
     	Location loc = locationService.find(location);
     	log.debug("Show weather for: " + loc.getLocationName());
     	return weatherService.getCurrentWeatherForLocation(loc);
+    }
+
+
+    @RequestMapping(value = "/analytics")
+    public String testAnalytics() {
+        analyticService.updateAllWeatherData();
+        return "test";
     }
 
 }

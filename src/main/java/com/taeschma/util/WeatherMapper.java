@@ -114,7 +114,7 @@ public class WeatherMapper {
 	 * @param newValue
 	 * @return
 	 */
-	private static Integer getCurrentPrecipCount(Integer oldValue, Integer newValue) {
+	public static Integer getCurrentPrecipCount(Integer oldValue, Integer newValue) {
 		Integer tempTics = newValue - oldValue;
 		if (oldValue.compareTo(newValue) > 0) {
 			tempTics = (4096 - oldValue) + newValue;
