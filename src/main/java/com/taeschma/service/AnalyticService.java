@@ -131,6 +131,8 @@ public class AnalyticService {
 
     /**
      * start hour for hourly analytics
+     * --> search last entry
+     * --> if no entries available then calculate start hour NOW minus YEARS-BACK param
      *
      * @return
      */

@@ -1,7 +1,12 @@
 package com.taeschma.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.taeschma.domain.*;
+import com.taeschma.repository.HourDataRepository;
 import com.taeschma.service.AnalyticService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.taeschma.domain.CurrentStationWeather;
-import com.taeschma.domain.CurrentWeather;
-import com.taeschma.domain.Location;
-import com.taeschma.domain.StationRawData;
 import com.taeschma.service.LocationService;
 import com.taeschma.service.RawDataService;
 import com.taeschma.service.WeatherService;
@@ -46,6 +47,8 @@ public class IndexController {
     private LocationService locationService;
     @Autowired
     private AnalyticService analyticService;
+    @Autowired
+    private HourDataRepository hourDataRepository;
     
     /**
      * Index page with weather station info
@@ -101,5 +104,41 @@ public class IndexController {
         analyticService.updateAllWeatherData();
         return "test";
     }
+
+    @RequestMapping(value = "/showrain")
+    public String rainAnalytics(Model model) {
+        List<Hour> allByOrderByTimestampHourDesc = hourDataRepository.findAllByOrderByTimestampHourDesc();
+
+        Map<Integer, String> days = new HashMap<>();
+        days.put(1,"Mon");
+        days.put(2,"Tue");
+        days.put(3,"Wed");
+        days.put(4,"Thu");
+        days.put(5,"Fri");
+        days.put(6,"Sat");
+        days.put(7,"Sun");
+
+
+        List<Float> ret = new ArrayList<>();
+        if(!allByOrderByTimestampHourDesc.isEmpty()) {
+            int i = 23;
+            while (i >= 0) {
+
+                Hour hour = allByOrderByTimestampHourDesc.get(i);
+                Float precipTotalMM = hour.getPrecipTotalMM();
+                ret.add(precipTotalMM);
+
+                i--;
+            }
+        }
+        System.out.println("Anzahl: " + allByOrderByTimestampHourDesc.size());
+
+        System.out.println(ret.toString());
+
+        model.addAttribute("regenmengen", ret);
+
+        return "test";
+    }
+
 
 }
