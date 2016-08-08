@@ -3,6 +3,7 @@ package com.taeschma.repository;
 import com.taeschma.domain.Hour;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -14,4 +15,6 @@ public interface HourDataRepository extends MongoRepository<Hour, ObjectId> {
     public Hour findTopByOrderByTimestampHourDesc();
     public Hour findByTimestampHour(Date date);
     public List<Hour> findAllByOrderByTimestampHourDesc();
+
+    List<Hour> findByTimestampHourBetweenOrderByTimestampHourAsc(Date from, Date to);
 }

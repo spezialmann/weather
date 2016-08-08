@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.taeschma.domain.*;
 import com.taeschma.repository.HourDataRepository;
-import com.taeschma.service.AnalyticService;
+import com.taeschma.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.taeschma.service.LocationService;
-import com.taeschma.service.RawDataService;
-import com.taeschma.service.WeatherService;
 import com.taeschma.util.WeatherMapper;
 
 /**
@@ -49,6 +47,8 @@ public class IndexController {
     private AnalyticService analyticService;
     @Autowired
     private HourDataRepository hourDataRepository;
+    @Autowired
+    private RainService rainService;
     
     /**
      * Index page with weather station info
@@ -105,39 +105,39 @@ public class IndexController {
         return "test";
     }
 
-    @RequestMapping(value = "/showrain")
+    @RequestMapping(value = "/rain", method = RequestMethod.GET)
     public String rainAnalytics(Model model) {
-        List<Hour> allByOrderByTimestampHourDesc = hourDataRepository.findAllByOrderByTimestampHourDesc();
-
-        Map<Integer, String> days = new HashMap<>();
-        days.put(1,"Mon");
-        days.put(2,"Tue");
-        days.put(3,"Wed");
-        days.put(4,"Thu");
-        days.put(5,"Fri");
-        days.put(6,"Sat");
-        days.put(7,"Sun");
 
 
-        List<Float> ret = new ArrayList<>();
-        if(!allByOrderByTimestampHourDesc.isEmpty()) {
-            int i = 23;
-            while (i >= 0) {
+        List<DiagramData> rain = rainService.getRain();
 
-                Hour hour = allByOrderByTimestampHourDesc.get(i);
-                Float precipTotalMM = hour.getPrecipTotalMM();
-                ret.add(precipTotalMM);
+        StringBuilder keys = new StringBuilder("[");
+        StringBuilder vals = new StringBuilder("[");
 
-                i--;
+        int i = 0;
+        for (DiagramData dd : rain) {
+            if(i>0) {
+                keys.append(", ");
+                vals.append(", ");
             }
+
+            keys.append("\"" + dd.getHour() + "\"");
+            vals.append("\"" + dd.getDataValue() + "\"");
+
+            i++;
         }
-        System.out.println("Anzahl: " + allByOrderByTimestampHourDesc.size());
+        keys.append("]");
+        vals.append("]");
 
-        System.out.println(ret.toString());
+        log.info("Anzahl: " + rain.size());
+        log.info(rain.toString());
+        log.info(keys.toString());
+        log.info(vals.toString());
 
-        model.addAttribute("regenmengen", ret);
+        model.addAttribute("keys", keys);
+        model.addAttribute("vals", vals);
 
-        return "test";
+        return "rain";
     }
 
 
