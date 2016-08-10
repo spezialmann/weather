@@ -16,28 +16,24 @@
 </div>
 
 
-<script type="text/javascript" th:inline="javascript">
-		// <![CDATA[
-var regenmengen = [[${vals}]];
+<script th:inline="javascript">
+/*<![CDATA[*/
+var regenmengen = /*[[${rain}]]*/;
+var categories = regenmengen.map(x => x.hour);
+var vals = regenmengen.map(x => x.dataValue);
+/*]]>*/
+</script>
 
 
-//var data = [[${vals}]];
-var data = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
-
-
-/**
-* Anders aufziehen: Farbe je nach Niederschlagsmenge...
-*/
-
-
+<script type="text/javascript">
 var ctx = document.getElementById("myChart");
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+        labels: categories,
         datasets: [{
             label: 'l/qm',
-            data: data,
+            data: vals,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -95,7 +91,6 @@ var myChart = new Chart(ctx, {
 
     }
 });
-		// ]]>
 </script>
 
 
