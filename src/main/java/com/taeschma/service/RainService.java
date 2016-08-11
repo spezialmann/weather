@@ -40,7 +40,7 @@ public class RainService {
         start = start.withSecond(0);
         start = start.withNano(0);
 
-        start = start.minusDays(4L);
+        start = start.minusDays(7L);
 
         ZonedDateTime end = start.plusDays(1L);
 

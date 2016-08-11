@@ -70,8 +70,6 @@ public class IndexController {
         if (currentStationWeatherList != null && currentStationWeatherList.size() > 0) {
             model.addAttribute("lastUpdate", currentStationWeatherList.get(0).getTimestamp());
         }
-
-
         model.addAttribute("currentStationWeatherList", currentStationWeatherList);
         model.addAttribute("currentStationWeather", weatherService.getCurrentWeatherForStationId(locationId));
 
@@ -99,13 +97,6 @@ public class IndexController {
         return weatherService.getCurrentWeatherForLocation(loc);
     }
 
-
-    @RequestMapping(value = "/analytics")
-    public String testAnalytics() {
-        analyticService.updateAllWeatherData();
-        return "test";
-    }
-
     @RequestMapping(value = "/rain", method = RequestMethod.GET)
     public String rainChart(Model model) {
         List<DiagramData> rain = rainService.getRain();
@@ -116,5 +107,16 @@ public class IndexController {
         return "rain";
     }
 
+
+    /**
+     * Start aggregation manually
+     *
+     * @return
+     */
+    @RequestMapping(value = "/analytics")
+    public String testAnalytics() {
+        analyticService.updateAllWeatherData();
+        return "rain";
+    }
 
 }

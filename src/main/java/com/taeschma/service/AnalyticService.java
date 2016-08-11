@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 
@@ -39,7 +40,7 @@ public class AnalyticService {
     HourDataRepository hourDataRepository;
 
 
-    //@Scheduled(initialDelay = 15000000, fixedDelay = 6000000)
+    @Scheduled(initialDelay = 15000000, fixedDelay = 6000000)
     public void updateAllWeatherData() {
         log.info("Start hourly analytics");
 
@@ -119,7 +120,7 @@ public class AnalyticService {
                     hourDataRepository.save(newHour);
                 }
 
-                log.info("Hour: " + newHour.toString());
+                log.debug("Hour: " + newHour.toString());
             }
 
             startHour = endOfHour;
