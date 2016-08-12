@@ -40,9 +40,10 @@ public class AnalyticService {
     HourDataRepository hourDataRepository;
 
 
-    @Scheduled(initialDelay = 15000000, fixedDelay = 6000000)
+    @Scheduled(initialDelayString = "${schedule.analytic.service.initial.delay}",
+            fixedDelayString = "${schedule.analytic.service.fixed.delay}")
     public void updateAllWeatherData() {
-        log.info("Start hourly analytics");
+        log.debug("Start hourly analytics");
 
         ZonedDateTime startHour = getStartHour();
         ZonedDateTime currentHour = ZonedDateTime.now();
@@ -50,6 +51,8 @@ public class AnalyticService {
 
         ZonedDateTime temp;
         Integer lastRainTic = null;
+
+        Hour currentLastHour = hourDataRepository.findTopByOrderByTimestampHourDesc();
 
         while (startHour.isBefore(nextHour)) {
 
@@ -61,9 +64,22 @@ public class AnalyticService {
 
             Hour findByTimestampHour = hourDataRepository.findByTimestampHour(dateFrom);
 
-            if (findByTimestampHour != null) {
-                //hour already exists
-            } else {
+            if (findByTimestampHour != null ) {  //hour already exists
+
+                log.debug("findByTimestampHour.getId() == currentLastHour.getId()");
+                log.debug(findByTimestampHour.getId() + "");
+                log.debug(currentLastHour.getId() + "");
+                log.debug("if true: " + (findByTimestampHour.getId().equals(currentLastHour.getId()))); ;
+                log.debug("");
+
+                if(findByTimestampHour.getId() == currentLastHour.getId()) { //if the current hour == the last hour in the DB
+                    log.info("++++++ Aktuelle Stunde loeschen und neu Berechnen ++++++");
+                    hourDataRepository.delete(currentLastHour.getId());
+                    findByTimestampHour = null;
+                }
+            }
+
+            if(findByTimestampHour == null) {
                 Hour newHour = new Hour(this.stationId, dateFrom, 0, 0.0F);
 
                 List<StationRawData> allForPeriod = rawDataService.findAllForPeriod(this.stationId, dateFrom, dateTo);
@@ -145,11 +161,19 @@ public class AnalyticService {
 
         Hour lastHour = hourDataRepository.findTopByOrderByTimestampHourDesc();
 
+        long count = hourDataRepository.count();
+
+
         //first hourly analytics
         if (lastHour == null) {
             ret = ret.minusYears(yearsBack);
             //ret = ret.minusWeeks(1);
-        } else {
+        }
+        else  {
+            if (count>1) {
+                hourDataRepository.delete(lastHour.getId());
+                lastHour = hourDataRepository.findTopByOrderByTimestampHourDesc();
+            }
             ret = ZonedDateTime.ofInstant(lastHour.getTimestampHour().toInstant(), ZoneOffset.UTC);
         }
 

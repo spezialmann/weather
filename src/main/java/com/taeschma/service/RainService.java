@@ -8,13 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.util.*;
 
 /**
  * Created by marco on 08.08.16.
@@ -34,28 +31,38 @@ public class RainService {
 
         List<DiagramData> ret = new ArrayList<>();
 
-        ZonedDateTime start = ZonedDateTime.now();
-        start = start.withHour(0);
-        start = start.withMinute(0);
-        start = start.withSecond(0);
-        start = start.withNano(0);
 
-        start = start.minusDays(7L);
+        ZoneId berlin = ZoneId.of("Europe/Berlin");
+        ZoneId utc = ZoneId.of("UTC");
 
-        ZonedDateTime end = start.plusDays(1L);
+        //Start
+        ZonedDateTime berlinDateTimeStart = ZonedDateTime.now(berlin);
+        berlinDateTimeStart = berlinDateTimeStart.withHour(0);
+        berlinDateTimeStart = berlinDateTimeStart.withMinute(0);
+        berlinDateTimeStart = berlinDateTimeStart.withSecond(0);
+        berlinDateTimeStart = berlinDateTimeStart.withNano(0);
+        berlinDateTimeStart = berlinDateTimeStart.minusMinutes(15L); //otherwise the query "between" not contains the first hour
+        //berlinDateTimeStart = berlinDateTimeStart.minusDays(1L); //only for dev -> if data only for special date available
 
-        log.info("Von: " + start);
-        log.info("Bis: " + end);
+        //End
+        ZonedDateTime berlinDateTimeEnd = berlinDateTimeStart.plusDays(1L);
+        berlinDateTimeEnd = berlinDateTimeEnd.plusMinutes(30L);  //otherwise the query "between" not contains the last hour
 
+        Date from = Date.from(berlinDateTimeStart.toInstant());
+        Date until = Date.from(berlinDateTimeEnd.toInstant());
+        log.debug("from (Date): " + from);
+        log.debug("until (Date): " + until);
 
-        List<Hour> byDatesBetween = hourDataRepository.findByTimestampHourBetweenOrderByTimestampHourAsc(Date.from(start.toInstant()), Date.from(end.toInstant()));
-
+        List<Hour> byDatesBetween = hourDataRepository.findByTimestampHourBetweenOrderByTimestampHourAsc(from, until);
 
 
         ZonedDateTime temp;
         for (Hour h : byDatesBetween) {
             Date timestampHour = h.getTimestampHour();
             temp = toZonedDateTime(timestampHour);
+            temp = temp.withZoneSameInstant(berlin);
+
+            log.debug("TEMP:::: " + temp.toString());
 
             Float precipTotalMM = h.getPrecipTotalMM();
             DiagramData dd = new DiagramData(temp.getHour(), h.getPrecipTotalMM());
