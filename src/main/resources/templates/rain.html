@@ -25,7 +25,7 @@ var categories = regenmengen.map(function(obj){
 });
 
 var vals = regenmengen.map(function(obj){
-   return (obj.dataValue * 10);
+   return (obj.dataValue);
 });
 
 /*]]>*/
@@ -53,8 +53,8 @@ var myChart = new Chart(ctx, {
             display: true,
             ticks: {
                 beginAtZero: true,
-                stepValue: 5,
-                max: 40
+                stepValue: 1,
+                //max: 40
             }
         }]
     }
