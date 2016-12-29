@@ -8,8 +8,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.taeschma.util.ObjectID_Serializer;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 
 @Document(collection = "StationRawDataCollection")
+@CompoundIndexes({
+    @CompoundIndex(name = "ind_time_of_rec_desc", def = "{'timeOfRecording' : -1}")
+})
 public class StationRawData {
 	@Id
 	private ObjectId id;
