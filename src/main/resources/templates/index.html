@@ -16,7 +16,7 @@
                     <div class="panel widget">
                         <div class="panel-body text-center" th:classappend="${current.temperature > 20} 
                              ? ' bg-danger' 
-                             : (${current.temperature lt 4} 
+                             : (${current.temperature lt 2} 
                                 ? ' bg-primary ' 
                                 : ' alert alert-success ')">
                             <!--/*/ <th:block th:include="fragments/widget :: widget"></th:block> /*/-->
