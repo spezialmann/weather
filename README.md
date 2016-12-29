@@ -1,5 +1,7 @@
 # weather
 
+[![Build Status](https://travis-ci.org/spezialmann/weather.svg?branch=master)](https://travis-ci.org/spezialmann/weather)
+
 ### Simple web project / api for
  
 - worldweatheronline wheater data

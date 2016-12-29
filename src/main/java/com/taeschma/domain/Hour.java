@@ -8,11 +8,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.Map;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 
 /**
  * Created by marco on 03.08.16.
  */
 @Document(collection = "analytic_hour")
+@CompoundIndexes({
+    @CompoundIndex(name = "ind_tstp_hour_desc", def = "{'timestampHour' : -1}")
+})
 public class Hour {
     @Id
     private ObjectId id;
