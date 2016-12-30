@@ -1,12 +1,8 @@
 package com.taeschma.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.taeschma.domain.*;
-import com.taeschma.repository.HourDataRepository;
 import com.taeschma.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +25,6 @@ public class IndexController {
 
     private final Logger log = LoggerFactory.getLogger(IndexController.class);
 
-    @Value("${weather.station.default}")
-    private String stationId;
-    @Value("${weather.station.show.current.index}")
-    private Integer measuringSpot;
     @Value("${weather.stations.forecast.location.location.id}")
     private String locationId;
 
@@ -44,8 +36,6 @@ public class IndexController {
     private LocationService locationService;
     @Autowired
     private AnalyticService analyticService;
-    @Autowired
-    private HourDataRepository hourDataRepository;
     @Autowired
     private RainService rainService;
 
@@ -87,12 +77,13 @@ public class IndexController {
     public
     @ResponseBody
     CurrentWeather showCurrentWeather(@RequestParam(value = "location", defaultValue = "", required = false) String location) {
+        String tempLocationId = "";
         if (location == null || location.isEmpty()) {
             Location loc = locationService.findAll().get(0);
-            location = loc.getLocationId();
+            tempLocationId = loc.getLocationId();
         }
-        log.debug("Location: " + location);
-        Location loc = locationService.find(location);
+        log.debug("Location: " + tempLocationId);
+        Location loc = locationService.find(tempLocationId);
         log.debug("Show weather for: " + loc.getLocationName());
         return weatherService.getCurrentWeatherForLocation(loc);
     }

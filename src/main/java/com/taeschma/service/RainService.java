@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 
@@ -22,10 +20,7 @@ public class RainService {
     private final Logger log = LoggerFactory.getLogger(RainService.class);
 
     @Autowired
-    HourDataRepository hourDataRepository;
-
-    public RainService() {
-    }
+    private HourDataRepository hourDataRepository;
 
     public List<DiagramData> getRain() {
 
@@ -33,7 +28,6 @@ public class RainService {
 
 
         ZoneId berlin = ZoneId.of("Europe/Berlin");
-        ZoneId utc = ZoneId.of("UTC");
 
         //Start
         ZonedDateTime berlinDateTimeStart = ZonedDateTime.now(berlin);
@@ -64,7 +58,6 @@ public class RainService {
 
             log.debug("TEMP:::: " + temp.toString());
 
-            Float precipTotalMM = h.getPrecipTotalMM();
             DiagramData dd = new DiagramData(temp.getHour(), h.getPrecipTotalMM());
 
             ret.add(dd);

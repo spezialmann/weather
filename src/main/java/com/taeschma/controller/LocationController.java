@@ -28,9 +28,6 @@ public class LocationController {
     private LocationService locationService;
     private WeatherService weatherService;
     
-    @Value("#{'${weather.station.positions}'.split(',')}")
-    private List<String> myStations;
-
     @Autowired
     public void setLocationService(LocationService locationService) {
         this.locationService = locationService;

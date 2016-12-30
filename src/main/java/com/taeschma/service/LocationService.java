@@ -21,21 +21,19 @@ import org.springframework.stereotype.Service;
 public class LocationService {
 
     private final Logger log = LoggerFactory.getLogger(LocationService.class);
-    
+
     @Autowired
     private LocationRepository locationRepository;
 
-    
     /**
-     * findAll Locations 
-     * default sort: locationName ASC
-     * 
+     * findAll Locations default sort: locationName ASC
+     *
      * @return
      */
     public List<Location> findAll() {
         return locationRepository.findAll(
                 new Sort(
-                    new Order(ASC, "locationName")
+                        new Order(ASC, "locationName")
                 )
         );
     }
@@ -46,13 +44,13 @@ public class LocationService {
 
     /**
      * delete Location
-     * 
+     *
      * @param locationId
      * @return
      */
-    public boolean deleteLocation(String locationId) {
+    public boolean deleteLocation(String locationId) throws RuntimeException {
         Location findByLocationId = locationRepository.findByLocationId(locationId);
-        if ( findByLocationId == null ) {
+        if (findByLocationId == null) {
             throw new RuntimeException("Location with Id does not exist: " + locationId);
         }
         locationRepository.delete(findByLocationId);
@@ -61,22 +59,23 @@ public class LocationService {
 
     /**
      * save or update Location
-     * 
+     *
      * @param location
      * @return
      */
     public Location saveOrUpdate(Location location) {
+        Location ret;
         if (location.getLocationId() == null || location.getLocationId().equals("")) {
             log.info("Location neu Anlegen" + location.toString());
             location.setLocationId(UUID.randomUUID().toString());
-            location = locationRepository.insert(location);
+            ret = locationRepository.insert(location);
         } else {
-        	log.info("Update Location " + location.getLocationId());
-        	Location locationFromDb = locationRepository.findByLocationId(location.getLocationId());
-        	BeanUtils.copyProperties(location, locationFromDb, "locationId", "id", "version");
-            location = locationRepository.save(locationFromDb);
+            log.info("Update Location " + location.getLocationId());
+            Location locationFromDb = locationRepository.findByLocationId(location.getLocationId());
+            BeanUtils.copyProperties(location, locationFromDb, "locationId", "id", "version");
+            ret = locationRepository.save(locationFromDb);
         }
-        return location;
+        return ret;
     }
 
 }

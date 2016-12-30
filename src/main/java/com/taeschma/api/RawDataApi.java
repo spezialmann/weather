@@ -21,7 +21,7 @@ public class RawDataApi {
     private final Logger log = LoggerFactory.getLogger(RawDataApi.class);
 
     @Autowired
-    RawDataService rawDataService;
+    private RawDataService rawDataService;
 
     /**
      *
