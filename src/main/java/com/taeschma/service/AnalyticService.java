@@ -34,10 +34,10 @@ public class AnalyticService {
     private Integer yearsBack;
 
     @Autowired
-    RawDataService rawDataService;
+    private RawDataService rawDataService;
 
     @Autowired
-    HourDataRepository hourDataRepository;
+    private HourDataRepository hourDataRepository;
 
 
     @Scheduled(initialDelayString = "${schedule.analytic.service.initial.delay}",
@@ -69,7 +69,7 @@ public class AnalyticService {
                 log.debug("findByTimestampHour.getId() == currentLastHour.getId()");
                 log.debug(findByTimestampHour.getId() + "");
                 log.debug(currentLastHour.getId() + "");
-                log.debug("if true: " + (findByTimestampHour.getId().equals(currentLastHour.getId()))); ;
+                log.debug("if true: " + (findByTimestampHour.getId().equals(currentLastHour.getId())));
                 log.debug("");
 
                 if(findByTimestampHour.getId() == currentLastHour.getId()) { //if the current hour == the last hour in the DB

@@ -1,9 +1,6 @@
 package com.taeschma.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.taeschma.domain.*;
 import com.taeschma.repository.HourDataRepository;
@@ -87,12 +84,13 @@ public class IndexController {
     public
     @ResponseBody
     CurrentWeather showCurrentWeather(@RequestParam(value = "location", defaultValue = "", required = false) String location) {
+        String tempLocationId = "";
         if (location == null || location.isEmpty()) {
             Location loc = locationService.findAll().get(0);
-            location = loc.getLocationId();
+            tempLocationId = loc.getLocationId();
         }
-        log.debug("Location: " + location);
-        Location loc = locationService.find(location);
+        log.debug("Location: " + tempLocationId);
+        Location loc = locationService.find(tempLocationId);
         log.debug("Show weather for: " + loc.getLocationName());
         return weatherService.getCurrentWeatherForLocation(loc);
     }

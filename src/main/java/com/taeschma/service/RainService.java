@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 
@@ -22,7 +20,7 @@ public class RainService {
     private final Logger log = LoggerFactory.getLogger(RainService.class);
 
     @Autowired
-    HourDataRepository hourDataRepository;
+    private HourDataRepository hourDataRepository;
 
     public RainService() {
     }
