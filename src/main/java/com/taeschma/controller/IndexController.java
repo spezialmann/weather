@@ -3,7 +3,6 @@ package com.taeschma.controller;
 import java.util.List;
 
 import com.taeschma.domain.*;
-import com.taeschma.repository.HourDataRepository;
 import com.taeschma.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +25,6 @@ public class IndexController {
 
     private final Logger log = LoggerFactory.getLogger(IndexController.class);
 
-    @Value("${weather.station.default}")
-    private String stationId;
-    @Value("${weather.station.show.current.index}")
-    private Integer measuringSpot;
     @Value("${weather.stations.forecast.location.location.id}")
     private String locationId;
 
@@ -41,8 +36,6 @@ public class IndexController {
     private LocationService locationService;
     @Autowired
     private AnalyticService analyticService;
-    @Autowired
-    private HourDataRepository hourDataRepository;
     @Autowired
     private RainService rainService;
 

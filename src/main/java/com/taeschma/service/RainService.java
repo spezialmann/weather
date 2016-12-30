@@ -22,16 +22,12 @@ public class RainService {
     @Autowired
     private HourDataRepository hourDataRepository;
 
-    public RainService() {
-    }
-
     public List<DiagramData> getRain() {
 
         List<DiagramData> ret = new ArrayList<>();
 
 
         ZoneId berlin = ZoneId.of("Europe/Berlin");
-        ZoneId utc = ZoneId.of("UTC");
 
         //Start
         ZonedDateTime berlinDateTimeStart = ZonedDateTime.now(berlin);
@@ -62,7 +58,6 @@ public class RainService {
 
             log.debug("TEMP:::: " + temp.toString());
 
-            Float precipTotalMM = h.getPrecipTotalMM();
             DiagramData dd = new DiagramData(temp.getHour(), h.getPrecipTotalMM());
 
             ret.add(dd);
