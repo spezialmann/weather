@@ -1,5 +1,6 @@
 # weather
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/91ebfefd316d48828464163f9fe9a7df)](https://www.codacy.com/app/spezialmann/weather?utm_source=github.com&utm_medium=referral&utm_content=spezialmann/weather&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/spezialmann/weather.svg?branch=master)](https://travis-ci.org/spezialmann/weather)
 
 ### Simple web project / api for
