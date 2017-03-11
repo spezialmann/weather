@@ -82,6 +82,9 @@ public class IndexController {
             Location loc = locationService.findAll().get(0);
             tempLocationId = loc.getLocationId();
         }
+        else {
+            tempLocationId = location;
+        }
         log.debug("Location: " + tempLocationId);
         Location loc = locationService.find(tempLocationId);
         log.debug("Show weather for: " + loc.getLocationName());
