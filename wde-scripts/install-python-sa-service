@@ -1,0 +1,16 @@
+[Unit]
+Description=serialmon
+After=syslog.target
+
+[Service]
+Type=idle
+User=pi
+ExecStart=/usr/bin/python /home/pi/wde/serialmon.py & > /srv/logs/serialmon.log 2>&1
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+
+# this file as /etc/systemd/system/serialmon.service
+# sudo nano /etc/systemd/system/serialmon.service
+# sudo systemctl enable serialmon.service

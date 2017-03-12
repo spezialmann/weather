@@ -1,0 +1,15 @@
+[Unit]
+Description=weather
+After=syslog.target
+
+[Service]
+User=pi
+ExecStart=/srv/app/weather.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+
+# this file as /etc/systemd/system/weather.service
+# sudo nano /etc/systemd/system/weather.service
+# sudo systemctl enable weather.service
