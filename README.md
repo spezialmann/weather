@@ -2,6 +2,7 @@
 
 [![Apache License 2](https://img.shields.io/badge/license-ASF2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 [![Build Status](https://travis-ci.org/spezialmann/weather.svg?branch=master)](https://travis-ci.org/spezialmann/weather)
+[![CircleCI](https://circleci.com/gh/spezialmann/weather.svg?style=svg)](https://circleci.com/gh/spezialmann/weather)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/91ebfefd316d48828464163f9fe9a7df)](https://www.codacy.com/app/spezialmann/weather?utm_source=github.com&utm_medium=referral&utm_content=spezialmann/weather&utm_campaign=badger)
 
 ## Simple web project / api for
