@@ -58,20 +58,20 @@ public class WeatherService {
 			fixedDelayString = "${schedule.weather.service.fixed.delay}")
 	public void updateAllWeatherData() {
 		log.info("Start api requests");
-		List<Location> locations = locationService.findAll();
-		
-		/* Weather forecast for the location of the weather station */
-		if(longitude!=null && latitude!=null && locationId!=null) {
-			Location staticLocation = new Location();
-			staticLocation.setLatitude(latitude);
-			staticLocation.setLongitude(longitude);
-			staticLocation.setLocationId(locationId);
-			locations.add(staticLocation);
-		}
-		
-		for (Location location : locations) {
-			updateWeatherForLocation(location);
-		}
+//		List<Location> locations = locationService.findAll();
+//		
+//		/* Weather forecast for the location of the weather station */
+//		if(longitude!=null && latitude!=null && locationId!=null) {
+//			Location staticLocation = new Location();
+//			staticLocation.setLatitude(latitude);
+//			staticLocation.setLongitude(longitude);
+//			staticLocation.setLocationId(locationId);
+//			locations.add(staticLocation);
+//		}
+//		
+//		for (Location location : locations) {
+//			updateWeatherForLocation(location);
+//		}
 		log.info("End api requests");
 	}
 	
