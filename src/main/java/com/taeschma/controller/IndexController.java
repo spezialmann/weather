@@ -67,7 +67,7 @@ public class IndexController {
 
             log.info(lastUpdate.toString());
 
-            ZoneId defaultZoneId = ZoneId.of("CEST");
+            ZoneId defaultZoneId = ZoneId.of("CET");
             //1. Convert Date -> Instant
             Instant instant = lastUpdate.toInstant();
             //System.out.println("instant : " + instant); //Zone : UTC+0
