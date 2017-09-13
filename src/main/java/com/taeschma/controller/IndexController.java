@@ -67,13 +67,13 @@ public class IndexController {
 
             log.info(lastUpdate.toString());
 
-            ZoneId defaultZoneId = ZoneId.of("UTC");
+            ZoneId defaultZoneId = ZoneId.of("CEST");
             //1. Convert Date -> Instant
             Instant instant = lastUpdate.toInstant();
-            System.out.println("instant : " + instant); //Zone : UTC+0
+            //System.out.println("instant : " + instant); //Zone : UTC+0
             //3. Instant + system default time zone + toLocalDateTime() = LocalDateTime
             LocalDateTime localDateTime = instant.atZone(defaultZoneId).toLocalDateTime();
-            System.out.println("localDateTime : " + localDateTime);
+            //System.out.println("localDateTime : " + localDateTime);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
             String formatDateTime = localDateTime.format(formatter);
