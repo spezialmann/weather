@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.taeschma.util.WeatherMapper;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * @author marco
@@ -58,14 +63,28 @@ public class IndexController {
         log.debug("Anzahl: " + currentStationWeatherList.size());
 
         if (currentStationWeatherList != null && currentStationWeatherList.size() > 0) {
-            model.addAttribute("lastUpdate", currentStationWeatherList.get(0).getTimestamp());
+            Date lastUpdate = currentStationWeatherList.get(0).getTimestamp();
+
+            log.info(lastUpdate.toString());
+
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+            //1. Convert Date -> Instant
+            Instant instant = lastUpdate.toInstant();
+            System.out.println("instant : " + instant); //Zone : UTC+0
+            //3. Instant + system default time zone + toLocalDateTime() = LocalDateTime
+            LocalDateTime localDateTime = instant.atZone(defaultZoneId).toLocalDateTime();
+            System.out.println("localDateTime : " + localDateTime);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+            String formatDateTime = localDateTime.format(formatter);
+
+            model.addAttribute("lastUpdate", formatDateTime);
         }
         model.addAttribute("currentStationWeatherList", currentStationWeatherList);
         model.addAttribute("currentStationWeather", weatherService.getCurrentWeatherForStationId(locationId));
 
         return "index";
     }
-
 
     /**
      * Ajax request for current weather data
@@ -74,15 +93,13 @@ public class IndexController {
      * @return
      */
     @RequestMapping("showcurrent")
-    public
-    @ResponseBody
+    public @ResponseBody
     CurrentWeather showCurrentWeather(@RequestParam(value = "location", defaultValue = "", required = false) String location) {
         String tempLocationId = "";
         if (location == null || location.isEmpty()) {
             Location loc = locationService.findAll().get(0);
             tempLocationId = loc.getLocationId();
-        }
-        else {
+        } else {
             tempLocationId = location;
         }
         log.debug("Location: " + tempLocationId);
@@ -100,7 +117,6 @@ public class IndexController {
 
         return "rain";
     }
-
 
     /**
      * Start aggregation manually
