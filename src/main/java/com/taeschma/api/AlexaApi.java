@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -30,6 +31,7 @@ public class AlexaApi {
     public SpeechletResponse amazonApi() {
         log.info("AlexaApi@amazonApi");
 
+        
         String speechText = "Hello world";
 
         // Create the Simple card content.
@@ -41,7 +43,7 @@ public class AlexaApi {
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
         speech.setText(speechText);
 
-        SpeechletResponse newTellResponse = SpeechletResponse.newTellResponse(speech, card);
+        SpeechletResponse newTellResponse = SpeechletResponse.newTellResponse(speech);
         
         log.info(newTellResponse.toString());
         
