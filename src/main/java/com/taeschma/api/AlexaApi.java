@@ -5,6 +5,10 @@ import com.amazon.speech.speechlet.IntentRequest;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.SimpleCard;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +32,7 @@ public class AlexaApi {
     }
 
     @RequestMapping("/alexa/amazon/api")
-    public SpeechletResponse amazonApi() {
+    public AlexaResponse amazonApi() {
         log.info("AlexaApi@amazonApi");
 
         
@@ -47,8 +51,20 @@ public class AlexaApi {
         
         log.info(newTellResponse.toString());
         
-        return newTellResponse;
+        AlexaResponse alexaResponse = new AlexaResponse("1.0", newTellResponse);
+        
+        return alexaResponse;
 
     }
 
+}
+
+@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
+class AlexaResponse {
+    @NonNull
+    private String version;
+    @NonNull
+    private SpeechletResponse response;
 }
