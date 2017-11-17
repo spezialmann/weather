@@ -27,7 +27,7 @@ public class AlexaApi {
     }
 
     @RequestMapping("/alexa/amazon/api")
-    public SpeechletResponse amazonApi(IntentRequest intentRequest) {
+    public SpeechletResponse amazonApi() {
         log.info("AlexaApi@amazonApi");
 
         String speechText = "Hello world";
