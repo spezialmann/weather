@@ -41,7 +41,11 @@ public class AlexaApi {
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
         speech.setText(speechText);
 
-        return SpeechletResponse.newTellResponse(speech, card);
+        SpeechletResponse newTellResponse = SpeechletResponse.newTellResponse(speech, card);
+        
+        log.info(newTellResponse.toString());
+        
+        return newTellResponse;
 
     }
 
