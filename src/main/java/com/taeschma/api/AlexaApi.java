@@ -108,7 +108,7 @@ public class AlexaApi {
             String formatHour = localDateTime.format(formatterHour);
             String formatMinute = localDateTime.format(formatterMinute);
             
-            alexaAnsage += formatDate + " um <say-as interpret-as=\"cardinal\">" + formatHour + "</say-as> Uhr " + formatMinute + ". <break time=\"1s\"/>";
+            alexaAnsage += formatDate + " um <say-as interpret-as=\"ordinal\">" + formatHour + "</say-as> Uhr " + formatMinute + ". <break time=\"1s\"/>";
             
             alexaAnsage += " Aktuelle Außentemperatur " + aussen.getTemperature().toString().replace('.', ',') + " Grad <break time=\"1s\"/>";
             alexaAnsage += " Tageshöchsttemperatur " + aussen.getMaxTemperature().toString().replace('.', ',') + " Grad <break time=\"1s\"/>";
