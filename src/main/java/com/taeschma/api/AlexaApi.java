@@ -101,19 +101,19 @@ public class AlexaApi {
             LocalDateTime localDateTime = instant.atZone(defaultZoneId).toLocalDateTime();
             log.debug("localDateTime : " + localDateTime);
             DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.GERMAN);
-            DateTimeFormatter formatterHour = DateTimeFormatter.ofPattern("HH", Locale.GERMAN);
-            DateTimeFormatter formatterMinute = DateTimeFormatter.ofPattern("mm", Locale.GERMAN);
+            DateTimeFormatter formatterHour = DateTimeFormatter.ofPattern("H", Locale.GERMAN);
+            DateTimeFormatter formatterMinute = DateTimeFormatter.ofPattern("m", Locale.GERMAN);
 
             String formatDate = localDateTime.format(formatterDate);
             String formatHour = localDateTime.format(formatterHour);
             String formatMinute = localDateTime.format(formatterMinute);
             
-            alexaAnsage += formatDate + " um " + formatHour + " Uhr " + formatMinute + ". ";
+            alexaAnsage += formatDate + " um " + formatHour + " Uhr " + formatMinute + ". <break strength=\"x-strong\"/>";
             
-            alexaAnsage += " Aktuelle Außentemperatur " + aussen.getTemperature().toString().replace('.', ',') + " Grad <break strength=\"strong\"/>";
-            alexaAnsage += " Tageshöchsttemperatur " + aussen.getMaxTemperature().toString().replace('.', ',') + " Grad <break strength=\"strong\"/>";
-            alexaAnsage += " Tagesminimum " + aussen.getMinTemperature().toString().replace('.', ',') + " Grad <break strength=\"strong\"/>";
-            alexaAnsage += " Regenmenge heute <emphasis level=\"strong\">" + aussen.getPrecipMMSum().toString().replace('.', ',') + " Liter</emphasis> pro Quadratmeter <break strength=\"strong\"/>";
+            alexaAnsage += " Aktuelle Außentemperatur " + aussen.getTemperature().toString().replace('.', ',') + " Grad <break strength=\"x-strong\"/>";
+            alexaAnsage += " Tageshöchsttemperatur " + aussen.getMaxTemperature().toString().replace('.', ',') + " Grad <break strength=\"x-strong\"/>";
+            alexaAnsage += " Tagesminimum " + aussen.getMinTemperature().toString().replace('.', ',') + " Grad <break strength=\"x-strong\"/>";
+            alexaAnsage += " Regenmenge heute " + aussen.getPrecipMMSum().toString().replace('.', ',') + " Liter pro Quadratmeter <break strength=\"x-strong\"/>";
             
             if(currentStationWeatherList.size()>1) {
                 CurrentStationWeather innen = currentStationWeatherList.get(1);
