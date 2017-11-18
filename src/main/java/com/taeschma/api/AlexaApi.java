@@ -108,16 +108,16 @@ public class AlexaApi {
             String formatHour = localDateTime.format(formatterHour);
             String formatMinute = localDateTime.format(formatterMinute);
             
-            alexaAnsage += formatDate + " um <say-as interpret-as=\"cardinal\">" + formatHour + "</say-as> Uhr " + formatMinute + ". <break time=\"2s\"/>";
+            alexaAnsage += formatDate + " um <say-as interpret-as=\"cardinal\">" + formatHour + "</say-as> Uhr " + formatMinute + ". <break time=\"1s\"/>";
             
-            alexaAnsage += " Aktuelle Außentemperatur " + aussen.getTemperature().toString().replace('.', ',') + " Grad <break strength=\"x-strong\"/>";
-            alexaAnsage += " Tageshöchsttemperatur " + aussen.getMaxTemperature().toString().replace('.', ',') + " Grad <break strength=\"x-strong\"/>";
-            alexaAnsage += " Tagesminimum " + aussen.getMinTemperature().toString().replace('.', ',') + " Grad <break strength=\"x-strong\"/>";
-            alexaAnsage += " Regenmenge heute " + aussen.getPrecipMMSum().toString().replace('.', ',') + " Liter pro Quadratmeter <break strength=\"x-strong\"/>";
+            alexaAnsage += " Aktuelle Außentemperatur " + aussen.getTemperature().toString().replace('.', ',') + " Grad <break time=\"1s\"/>";
+            alexaAnsage += " Tageshöchsttemperatur " + aussen.getMaxTemperature().toString().replace('.', ',') + " Grad <break time=\"1s\"/>";
+            alexaAnsage += " Tagesminimum " + aussen.getMinTemperature().toString().replace('.', ',') + " Grad <break time=\"1s\"/>";
+            alexaAnsage += " Regenmenge heute " + aussen.getPrecipMMSum().toString().replace('.', ',') + " Liter pro Quadratmeter <break time=\"1s\"/>";
             
             if(currentStationWeatherList.size()>1) {
                 CurrentStationWeather innen = currentStationWeatherList.get(1);
-                alexaAnsage += " Aktuelle Innentemperatur " + innen.getTemperature().toString().replace('.', ',') + " Grad <break strength=\"strong\"/>";
+                alexaAnsage += " Aktuelle Innentemperatur " + innen.getTemperature().toString().replace('.', ',') + " Grad <break time=\"1s\"/>";
             }
             
         }
