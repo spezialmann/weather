@@ -1,10 +1,9 @@
 package com.taeschma.api;
 
-import com.amazon.speech.slu.Intent;
-import com.amazon.speech.speechlet.IntentRequest;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.SimpleCard;
+import com.amazon.speech.ui.SsmlOutputSpeech;
 import com.taeschma.domain.CurrentStationWeather;
 import com.taeschma.domain.StationRawData;
 import com.taeschma.service.RawDataService;
@@ -24,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -55,13 +53,17 @@ public class AlexaApi {
         String speechText = getStationWeather();
 
         // Create the Simple card content.
-        SimpleCard card = new SimpleCard();
-        card.setTitle("HelloWorld");
-        card.setContent(speechText);
+//        SimpleCard card = new SimpleCard();
+//        card.setTitle("HelloWorld");
+//        card.setContent(speechText);
 
         // Create the plain text output.
-        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(speechText);
+//        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+//        speech.setText(speechText);
+        SsmlOutputSpeech speech = new SsmlOutputSpeech();
+        speech.setSsml(speechText);
+        
+        
 
         SpeechletResponse newTellResponse = SpeechletResponse.newTellResponse(speech);
 
@@ -74,7 +76,7 @@ public class AlexaApi {
     }
     
     private String getStationWeather() {
-        String alexaAnsage = "Das sind die aktuellen Daten der Wetterstation vom ";
+        String alexaAnsage = "<speak>";
         
         List<StationRawData> findAllForToday = rawDataService.findAllForToday("");
         List<CurrentStationWeather> currentStationWeatherList = WeatherMapper.getCurrentStationWeather(findAllForToday);
@@ -83,6 +85,8 @@ public class AlexaApi {
 
         if (null != currentStationWeatherList && currentStationWeatherList.size() > 0) {
             log.debug("Anzahl: " + currentStationWeatherList.size());
+            
+            alexaAnsage += "Das sind die aktuellen Daten der Wetterstation vom ";
             
             CurrentStationWeather aussen = currentStationWeatherList.get(0);
             Date lastUpdate = aussen.getTimestamp();
@@ -104,22 +108,24 @@ public class AlexaApi {
             String formatHour = localDateTime.format(formatterHour);
             String formatMinute = localDateTime.format(formatterMinute);
             
-            alexaAnsage += formatDate + " um " + formatHour + " Uhr " + formatMinute;
+            alexaAnsage += formatDate + " um " + formatHour + " Uhr " + formatMinute + ". ";
             
-            alexaAnsage += " Aktuelle Außentemperatur " + aussen.getTemperature().toString().replace('.', ',') + " Grad ";
-            alexaAnsage += " Tageshöchsttemperatur " + aussen.getMaxTemperature().toString().replace('.', ',') + " Grad ";
-            alexaAnsage += " Tagesminimum " + aussen.getMinTemperature().toString().replace('.', ',') + " Grad ";
-            alexaAnsage += " Regenmenge heute " + aussen.getPrecipMMSum().toString().replace('.', ',') + " Liter pro Quadratmeter ";
+            alexaAnsage += " Aktuelle Außentemperatur " + aussen.getTemperature().toString().replace('.', ',') + " Grad <break strength=\"strong\"/>";
+            alexaAnsage += " Tageshöchsttemperatur " + aussen.getMaxTemperature().toString().replace('.', ',') + " Grad <break strength=\"strong\"/>";
+            alexaAnsage += " Tagesminimum " + aussen.getMinTemperature().toString().replace('.', ',') + " Grad <break strength=\"strong\"/>";
+            alexaAnsage += " Regenmenge heute <emphasis level=\"strong\">" + aussen.getPrecipMMSum().toString().replace('.', ',') + " Liter</emphasis> pro Quadratmeter <break strength=\"strong\"/>";
             
             if(currentStationWeatherList.size()>1) {
                 CurrentStationWeather innen = currentStationWeatherList.get(1);
-                alexaAnsage += " Aktuelle Innentemperatur " + innen.getTemperature().toString().replace('.', ',') + " Grad ";
+                alexaAnsage += " Aktuelle Innentemperatur " + innen.getTemperature().toString().replace('.', ',') + " Grad <break strength=\"strong\"/>";
             }
             
         }
         else {
-            alexaAnsage = "Aktuelle keine Wetterdaten verfügbar";
+            alexaAnsage += "Aktuelle keine Wetterdaten verfügbar";
         }
+        
+        alexaAnsage += "</speak>";
         
         return alexaAnsage;
     }
